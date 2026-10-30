@@ -89,8 +89,8 @@ Any scenario failure · engine branch coverage <100% · unreviewed protocol in p
 | #   | Scope                                                                                                                                    | Status |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | M0  | Monorepo, tooling, CI skeleton, CLAUDE.md, brand.ts, ADRs for the stack                                                                  | done   |
-| M1  | triage-engine + protocol schema + dengue protocol v0.1.0 (DRAFT, cited) + 150 scenarios + property tests + coverage gate                 | next   |
-| M2  | Anonymous triage web app (no backend): guided intake, result, emergency screen, i18n en/hi/mr, a11y baseline, DRAFT banner, landing page |        |
+| M1  | triage-engine + protocol schema + dengue protocol v0.1.0 (DRAFT, cited) + 150 scenarios + property tests + coverage gate                 | done   |
+| M2  | Anonymous triage web app (no backend): guided intake, result, emergency screen, i18n en/hi/mr, a11y baseline, DRAFT banner, landing page | next   |
 | M3  | API foundation: Prisma, auth (signup/OTP/login/refresh/sessions/reset/TOTP), RBAC, audit, rate limits, encryption — all tested           |        |
 | M4  | Accounts UX: profile, dependents, emergency contacts, consents, claim anonymous results, export/delete                                   |        |
 | M5  | Diary, labs, episode view, doctor-summary PDF                                                                                            |        |
@@ -104,3 +104,13 @@ Any scenario failure · engine branch coverage <100% · unreviewed protocol in p
 ## Definition of done (every milestone)
 
 Typecheck, lint, all tests green · every TODO has an entry in `docs/TODO.md` · no secrets · docs updated · manual smoke script in the summary · list of assumptions and questions for the founder.
+
+## Triage engine and protocol: working notes (M1)
+
+- Engine API: `evaluate(input, protocol, now)` in `@bhanak/triage-engine`. Protocol data: `packages/protocols/dengue/v0.1.0.json` (DRAFT), loaded with `parseProtocol` from `@bhanak/protocols`. Strings: `v0.1.0.strings.en.json`.
+- Every protocol item has `basis` (SOURCE / SPEC_PROVISIONAL / SAFETY_DEFAULT), `review` and cited `sourceRefs`. Edit flow and rules: `packages/protocols/README.md`. After editing run `pnpm --filter @bhanak/protocols generate` (refreshes the JSON Schema and the generated list in `docs/clinical-review-checklist.md`).
+- Scenarios: edit `tests/scenarios/build-dengue-scenarios.mjs`, run `node tests/scenarios/build-dengue-scenarios.mjs`, commit both files. Expectations come from the sources and spec, never from engine output.
+- The engine's `test` script runs coverage and fails below 100%. Do not add `/* v8 ignore */`; restructure the code or add a test.
+- Never silently approve clinical content: nothing is marked `REVIEWED` until a named doctor signs off.
+- The source PDFs live in `docs/sources/` locally but are git-ignored (copyright) until the founder confirms the repo is private.
+- On this machine run pnpm from PowerShell; the pnpm shim misbehaves under Git Bash.
