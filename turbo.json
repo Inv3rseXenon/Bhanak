@@ -22,7 +22,16 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**", "test/**", "package.json", "vitest.config.*"]
+      "inputs": [
+        "src/**",
+        "test/**",
+        "package.json",
+        "vitest.config.*",
+        "$TURBO_ROOT$/packages/protocols/dengue/**",
+        "$TURBO_ROOT$/packages/protocols/schema/**",
+        "$TURBO_ROOT$/tests/scenarios/*.json",
+        "$TURBO_ROOT$/docs/clinical-review-checklist.md"
+      ]
     }
   }
 }

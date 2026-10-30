@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # local Claude Code state
 .claude/settings.local.json
+
+# third-party copyrighted guideline PDFs: kept local until the founder confirms the repo is private
+docs/sources/*.pdf

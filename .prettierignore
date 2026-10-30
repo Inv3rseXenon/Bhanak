@@ -10,3 +10,6 @@ pnpm-lock.yaml
 docs/SPEC.md
 # source guideline PDFs / extracted text
 docs/sources
+
+# generated block lives inside this file; keep the markers intact
+docs/clinical-review-checklist.md
