@@ -1,0 +1,959 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "disease": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": ["DRAFT", "REVIEWED"]
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "reviewerName": {
+          "type": ["string", "null"]
+        },
+        "registrationNumber": {
+          "type": ["string", "null"]
+        },
+        "reviewedOn": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["reviewerName", "registrationNumber", "reviewedOn"],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "publisher": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": ["title", "publisher"],
+        "additionalProperties": false
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "utcOffsetMinutes": {
+          "type": "number"
+        },
+        "inOutbreakSeason": {
+          "type": "boolean"
+        }
+      },
+      "required": ["utcOffsetMinutes", "inOutbreakSeason"],
+      "additionalProperties": false
+    },
+    "thresholds": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": ["number", "null"]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "review": {
+            "type": "string",
+            "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+          },
+          "basis": {
+            "type": "string",
+            "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "doc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "section": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["doc", "section"],
+              "additionalProperties": false
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": ["value", "review", "basis", "sourceRefs"],
+        "additionalProperties": false
+      }
+    },
+    "core": {
+      "type": "object",
+      "properties": {
+        "recentFeverDaysThreshold": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticalPhaseStartDayThreshold": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticalPhaseEndDayThreshold": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "recentFeverDaysThreshold",
+        "criticalPhaseStartDayThreshold",
+        "criticalPhaseEndDayThreshold"
+      ],
+      "additionalProperties": false
+    },
+    "dangerSigns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "i18nKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "basis": {
+            "type": "string",
+            "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+          },
+          "review": {
+            "type": "string",
+            "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "doc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "section": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["doc", "section"],
+              "additionalProperties": false
+            }
+          },
+          "note": {
+            "type": "string"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "tri"
+                  },
+                  "ref": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "is": {
+                    "type": "string",
+                    "enum": ["YES", "NO"]
+                  }
+                },
+                "required": ["kind", "ref", "is"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "const": "num"
+                  },
+                  "field": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "cmp": {
+                    "type": "string",
+                    "enum": ["lt", "lte", "gt", "gte", "eq"]
+                  },
+                  "threshold": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                },
+                "required": ["kind", "field", "cmp"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "unknownPolicy": {
+            "type": "string",
+            "enum": ["EMERGENCY", "UNCERTAIN"]
+          },
+          "applicableWhen": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "test", "unknownPolicy"],
+        "additionalProperties": false
+      }
+    },
+    "noFeverDangerSign": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "i18nKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "type": "string",
+          "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+        },
+        "review": {
+          "type": "string",
+          "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": ["doc", "section"],
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "HOME_CARE_WITH_TRIGGERS",
+            "TEST_AND_MONITOR",
+            "SEE_DOCTOR_TODAY",
+            "EMERGENCY_NOW"
+          ]
+        },
+        "when": {
+          "$ref": "#/$defs/__schema0"
+        }
+      },
+      "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "level", "when"],
+      "additionalProperties": false
+    },
+    "unknownEmergencyRule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "i18nKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "type": "string",
+          "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+        },
+        "review": {
+          "type": "string",
+          "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": ["doc", "section"],
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "HOME_CARE_WITH_TRIGGERS",
+            "TEST_AND_MONITOR",
+            "SEE_DOCTOR_TODAY",
+            "EMERGENCY_NOW"
+          ]
+        },
+        "when": {
+          "$ref": "#/$defs/__schema0"
+        }
+      },
+      "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "level", "when"],
+      "additionalProperties": false
+    },
+    "uncertainDanger": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "i18nKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "basis": {
+          "type": "string",
+          "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+        },
+        "review": {
+          "type": "string",
+          "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": ["doc", "section"],
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "HOME_CARE_WITH_TRIGGERS",
+            "TEST_AND_MONITOR",
+            "SEE_DOCTOR_TODAY",
+            "EMERGENCY_NOW"
+          ]
+        },
+        "when": {
+          "$ref": "#/$defs/__schema0"
+        }
+      },
+      "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "level", "when"],
+      "additionalProperties": false
+    },
+    "noDangerSignsReason": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "i18nKey": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": ["id", "i18nKey"],
+      "additionalProperties": false
+    },
+    "riskFactors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "i18nKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "basis": {
+            "type": "string",
+            "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+          },
+          "review": {
+            "type": "string",
+            "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "doc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "section": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["doc", "section"],
+              "additionalProperties": false
+            }
+          },
+          "note": {
+            "type": "string"
+          },
+          "when": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "when"],
+        "additionalProperties": false
+      }
+    },
+    "riskFactorPolicy": {
+      "type": "object",
+      "properties": {
+        "stepUpRule": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            },
+            "i18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "steps": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "maxLevel": {
+              "type": "string",
+              "enum": [
+                "HOME_CARE_WITH_TRIGGERS",
+                "TEST_AND_MONITOR",
+                "SEE_DOCTOR_TODAY",
+                "EMERGENCY_NOW"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "i18nKey", "steps", "maxLevel"],
+          "additionalProperties": false
+        },
+        "floorRule": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            },
+            "i18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "daysSinceOnsetThreshold": {
+              "type": "string",
+              "minLength": 1
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "HOME_CARE_WITH_TRIGGERS",
+                "TEST_AND_MONITOR",
+                "SEE_DOCTOR_TODAY",
+                "EMERGENCY_NOW"
+              ]
+            }
+          },
+          "required": ["id", "i18nKey", "daysSinceOnsetThreshold", "level"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["stepUpRule", "floorRule"],
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "i18nKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "basis": {
+            "type": "string",
+            "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+          },
+          "review": {
+            "type": "string",
+            "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "doc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "section": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["doc", "section"],
+              "additionalProperties": false
+            }
+          },
+          "note": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "HOME_CARE_WITH_TRIGGERS",
+              "TEST_AND_MONITOR",
+              "SEE_DOCTOR_TODAY",
+              "EMERGENCY_NOW"
+            ]
+          },
+          "when": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "level", "when"],
+        "additionalProperties": false
+      }
+    },
+    "testingAdvice": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          },
+          "i18nKey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "basis": {
+            "type": "string",
+            "enum": ["SOURCE", "SPEC_PROVISIONAL", "SAFETY_DEFAULT"]
+          },
+          "review": {
+            "type": "string",
+            "enum": ["TODO_DOCTOR_REVIEW", "REVIEWED"]
+          },
+          "sourceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "doc": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "section": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": "string"
+                }
+              },
+              "required": ["doc", "section"],
+              "additionalProperties": false
+            }
+          },
+          "note": {
+            "type": "string"
+          },
+          "when": {
+            "$ref": "#/$defs/__schema0"
+          }
+        },
+        "required": ["id", "i18nKey", "basis", "review", "sourceRefs", "when"],
+        "additionalProperties": false
+      }
+    },
+    "criticalPhase": {
+      "type": "object",
+      "properties": {
+        "noteI18nKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feverGoneNoteI18nKey": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": ["noteI18nKey", "feverGoneNoteI18nKey"],
+      "additionalProperties": false
+    },
+    "levels": {
+      "type": "object",
+      "properties": {
+        "HOME_CARE_WITH_TRIGGERS": {
+          "type": "object",
+          "properties": {
+            "headlineI18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": ["headlineI18nKey", "actions"],
+          "additionalProperties": false
+        },
+        "TEST_AND_MONITOR": {
+          "type": "object",
+          "properties": {
+            "headlineI18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": ["headlineI18nKey", "actions"],
+          "additionalProperties": false
+        },
+        "SEE_DOCTOR_TODAY": {
+          "type": "object",
+          "properties": {
+            "headlineI18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": ["headlineI18nKey", "actions"],
+          "additionalProperties": false
+        },
+        "EMERGENCY_NOW": {
+          "type": "object",
+          "properties": {
+            "headlineI18nKey": {
+              "type": "string",
+              "minLength": 1
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": ["headlineI18nKey", "actions"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "HOME_CARE_WITH_TRIGGERS",
+        "TEST_AND_MONITOR",
+        "SEE_DOCTOR_TODAY",
+        "EMERGENCY_NOW"
+      ],
+      "additionalProperties": false
+    },
+    "watchFor": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "returnImmediatelyIf": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "disease",
+    "version",
+    "reviewStatus",
+    "review",
+    "sources",
+    "defaults",
+    "thresholds",
+    "core",
+    "dangerSigns",
+    "noFeverDangerSign",
+    "unknownEmergencyRule",
+    "uncertainDanger",
+    "noDangerSignsReason",
+    "riskFactors",
+    "riskFactorPolicy",
+    "rules",
+    "testingAdvice",
+    "criticalPhase",
+    "levels",
+    "watchFor",
+    "returnImmediatelyIf"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "__schema0": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "all"
+            },
+            "of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": ["op", "of"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "any"
+            },
+            "of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            }
+          },
+          "required": ["op", "of"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "not"
+            },
+            "of": {
+              "$ref": "#/$defs/__schema0"
+            }
+          },
+          "required": ["op", "of"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "tri"
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "is": {
+              "type": "string",
+              "enum": ["YES", "NO", "UNKNOWN"]
+            }
+          },
+          "required": ["op", "ref", "is"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "num"
+            },
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "cmp": {
+              "type": "string",
+              "enum": ["lt", "lte", "gt", "gte", "eq"]
+            },
+            "threshold": {
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": ["op", "field", "cmp"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "flag"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": ["op", "name"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "trend"
+            },
+            "field": {
+              "type": "string",
+              "enum": ["plateletCount", "hematocrit"]
+            },
+            "dir": {
+              "type": "string",
+              "enum": ["rising", "falling"]
+            },
+            "minRelativeChange": {
+              "type": "string"
+            }
+          },
+          "required": ["op", "field", "dir"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

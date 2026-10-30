@@ -9,15 +9,25 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./dengue/*": "./dengue/*",
+    "./schema/*": "./schema/*"
   },
   "files": [
-    "dist"
+    "dist",
+    "dengue",
+    "schema"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run",
+    "generate": "pnpm run build && node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "@bhanak/shared": "workspace:*",
+    "@bhanak/triage-engine": "workspace:*",
+    "zod": "^4.6.7"
   }
 }

@@ -1,0 +1,2201 @@
+{
+  "schemaVersion": 1,
+  "id": "dengue",
+  "disease": "dengue",
+  "version": "0.1.0",
+  "reviewStatus": "DRAFT",
+  "review": {
+    "reviewerName": null,
+    "registrationNumber": null,
+    "reviewedOn": null
+  },
+  "sources": {
+    "NCVBDC2023": {
+      "title": "National Guidelines for Clinical Management of Dengue Fever 2023",
+      "publisher": "National Center for Vector Borne Diseases Control (NCVBDC), DGHS, Ministry of Health & Family Welfare, Government of India",
+      "note": "Section numbers follow the printed chapter and section headings (e.g. 4.1, Box 2, 7.1)."
+    },
+    "WHO2009": {
+      "title": "Dengue: guidelines for diagnosis, treatment, prevention and control",
+      "publisher": "World Health Organization",
+      "note": "2009 edition, file 9789241547871_eng.pdf. Section numbers follow the printed headings (e.g. 2.3.2.1, Textbox C)."
+    },
+    "CDC_POCKET": {
+      "title": "Dengue Case Management (pocket guide)",
+      "publisher": "[CITATION NEEDED: confirm publisher. File 20240521_342849-B_PRESS_READY_PocketGuideDCMC_UPDATE.pdf, PubID 301358; its text credits the 2022 PAHO guidelines and Paz-Bailey et al., Lancet 2024.]",
+      "note": "Cited by printed page number (p.1 to p.8)."
+    }
+  },
+  "defaults": {
+    "utcOffsetMinutes": 330,
+    "inOutbreakSeason": true
+  },
+  "thresholds": {
+    "recentFeverDays": {
+      "value": 7,
+      "unit": "days",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "2.1.1",
+          "note": "febrile phase usually lasts 2-7 days"
+        }
+      ],
+      "note": "Spec 5.3 says \"fever (current or within 7 days)\". Compared with whole days since the onset date."
+    },
+    "criticalPhaseStartDay": {
+      "value": 3,
+      "unit": "illness day",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "2.1.2",
+          "note": "critical phase \"usually on days 3-7 of illness\""
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "5.1",
+          "note": "children: between 3-7 days of onset of fever"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1",
+          "note": "after the 3rd or 4th day of fever"
+        }
+      ]
+    },
+    "criticalPhaseEndDay": {
+      "value": 7,
+      "unit": "illness day",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "2.1.2"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "5.1"
+        }
+      ]
+    },
+    "vomitingEpisodes24h": {
+      "value": 3,
+      "unit": "episodes in 24 h",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1 Warning signs",
+          "note": "persistent vomiting = 3 episodes in 1 hr or 4 in 6 hrs"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "says \"persistent vomiting\" without a number"
+        }
+      ],
+      "note": "Spec 5.3 gives N=3 per 24 h as a placeholder. The pocket guide defines it differently (3 in 1 hour or 4 in 6 hours). Doctor must choose; the spec value is the more sensitive one."
+    },
+    "plateletEmergency": {
+      "value": 50000,
+      "unit": "per cubic mm",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "13",
+          "note": "discharge criterion mentions platelets above 50,000/mm3"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "4.3.5",
+          "note": "platelets below 100,000 may be seen in dengue"
+        }
+      ],
+      "note": "NOT found in the sources as a \"go to hospital now\" cut-off. Doctor to confirm or replace."
+    },
+    "plateletSeeDoctor": {
+      "value": 100000,
+      "unit": "per cubic mm",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "4.3.5",
+          "note": "drop below 100,000 per microlitre may be observed in dengue"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.3 (b)",
+          "note": "antiplatelet drugs may be stopped when platelets are below one lakh"
+        }
+      ],
+      "note": "NOT found in the sources as a \"see a doctor today\" cut-off. Doctor to confirm or replace."
+    },
+    "plateletRapidFallFraction": {
+      "value": null,
+      "unit": "fraction of previous reading",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "\"rapid decrease in platelet count\""
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox C"
+        }
+      ],
+      "note": "UNSET ON PURPOSE: the sources say \"rapid\" without a number and the spec gives none. The rule that uses it is inert until a doctor supplies a value, and the protocol cannot be REVIEWED while it is null."
+    },
+    "hematocritRiseFraction": {
+      "value": 0.1,
+      "unit": "fraction of previous reading",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.3",
+          "note": "a rising haematocrit of 10% above baseline is an early objective indicator of plasma leakage"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "4.3.5",
+          "note": "haemoconcentration: increase of 20% or more"
+        }
+      ],
+      "note": "Treated as a relative rise versus the previous reading. Doctor to confirm relative vs absolute and the baseline definition."
+    },
+    "transaminaseSevere": {
+      "value": 1000,
+      "unit": "units per litre",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.4",
+          "note": "severe dengue: AST or ALT of 1000 U/L (comparison symbol is not legible in the extracted text; treated as greater-or-equal)"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1 Group C",
+          "note": "hepatitis [ALT or AST>1000 IU]"
+        }
+      ],
+      "note": "Doctor to confirm greater-than vs greater-or-equal."
+    },
+    "infantAgeMonths": {
+      "value": 12,
+      "unit": "months",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.2",
+          "note": "infants"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "infancy"
+        }
+      ],
+      "note": "Spec 5.3: infant under 12 months with any fever."
+    },
+    "childAgeMonths": {
+      "value": 60,
+      "unit": "months",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "infants and children (age <10 years) especially with malnutrition"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "infancy"
+        }
+      ],
+      "note": "Spec 5.3 uses age under 5 years. The NCVBDC high-risk list says under 10 years with malnutrition. Doctor to decide."
+    },
+    "elderAgeMonths": {
+      "value": 780,
+      "unit": "months (65 years)",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "elderly (age > 65 years)"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "old age"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6",
+          "note": "age >65 years"
+        }
+      ],
+      "note": "Spec says age 65 or older; sources say over 65. Doctor to confirm."
+    },
+    "riskFeverDays": {
+      "value": 3,
+      "unit": "illness day",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.1",
+          "note": "CBC for all patients with fever >3 days"
+        }
+      ],
+      "note": "Spec 5.3: fever 3 days or more with any risk factor."
+    },
+    "riskFloorFeverDays": {
+      "value": 2,
+      "unit": "days since onset",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SPEC_PROVISIONAL",
+      "sourceRefs": [],
+      "note": "Spec 5.4: floor at SEE_DOCTOR_TODAY when fever persists 2 days or more with a risk factor."
+    },
+    "ns1MaxDay": {
+      "value": 5,
+      "unit": "illness day",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.2",
+          "note": "NS1 for samples collected from day 1 to 5 and IgM after 5 days"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.1.2",
+          "note": "IgM usually detectable by day 5"
+        }
+      ]
+    },
+    "cbcFeverDays": {
+      "value": 3,
+      "unit": "illness day",
+      "review": "TODO_DOCTOR_REVIEW",
+      "basis": "SOURCE",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.1",
+          "note": "CBC for all patients with warning signs and all with fever >3 days"
+        }
+      ]
+    }
+  },
+  "core": {
+    "recentFeverDaysThreshold": "recentFeverDays",
+    "criticalPhaseStartDayThreshold": "criticalPhaseStartDay",
+    "criticalPhaseEndDayThreshold": "criticalPhaseEndDay"
+  },
+  "dangerSigns": [
+    {
+      "id": "CANNOT_KEEP_FLUIDS",
+      "i18nKey": "dengue.reason.cannot_keep_fluids",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "12 item 3",
+          "note": "intolerance to oral administration of fluids"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "unable to tolerate oral fluids"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "fluids.canKeepFluidsDown",
+        "is": "NO"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "PERSISTENT_VOMITING",
+      "i18nKey": "dengue.reason.persistent_vomiting",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "persistent vomiting"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "12 item 1"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox C"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1"
+        }
+      ],
+      "note": "Sign is sourced; the count that defines \"persistent\" is a spec placeholder (see threshold).",
+      "test": {
+        "kind": "num",
+        "field": "vomitingEpisodes24h",
+        "cmp": "gte",
+        "threshold": "vomitingEpisodes24h"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "SEVERE_ABDOMINAL_PAIN",
+      "i18nKey": "dengue.reason.severe_abdominal_pain",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "abdominal pain and tenderness"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox C"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.severeAbdominalPain",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "BLEEDING_GUMS",
+      "i18nKey": "dengue.reason.bleeding_gums",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "mucosal bleeding"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.bleedingGums",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "BLEEDING_NOSE",
+      "i18nKey": "dengue.reason.bleeding_nose",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "epistaxis"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.bleedingNose",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "BLOOD_IN_VOMIT",
+      "i18nKey": "dengue.reason.blood_in_vomit",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "haematemesis"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.bloodInVomit",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "BLOOD_OR_BLACK_STOOL",
+      "i18nKey": "dengue.reason.blood_or_black_stool",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "melena"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "black tarry stools"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.bloodOrBlackStool",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "BLOOD_IN_URINE",
+      "i18nKey": "dengue.reason.blood_in_urine",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "haematuria"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "red urine"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.bloodInUrine",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "HEAVY_MENSTRUAL_BLEEDING",
+      "i18nKey": "dengue.reason.heavy_menstrual_bleeding",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "excessive menstrual bleeding"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G",
+          "note": "heavy menstruation/vaginal bleeding"
+        }
+      ],
+      "note": "Not asked when sex is male (applicableWhen).",
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.heavyMenstrualBleeding",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY",
+      "applicableWhen": {
+        "op": "not",
+        "of": {
+          "op": "flag",
+          "name": "sexMale"
+        }
+      }
+    },
+    {
+      "id": "DROWSY_OR_LETHARGIC",
+      "i18nKey": "dengue.reason.drowsy_or_lethargic",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "lethargy"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "drowsiness"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.3"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.drowsyOrLethargic",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "CONFUSION",
+      "i18nKey": "dengue.reason.confusion",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "sudden behavioral changes"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "altered sensorium"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G",
+          "note": "mental confusion"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.confusion",
+        "is": "YES"
+      },
+      "unknownPolicy": "EMERGENCY"
+    },
+    {
+      "id": "RESTLESS_OR_IRRITABLE",
+      "i18nKey": "dengue.reason.restless_or_irritable",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "restlessness"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "irritability"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.restlessOrIrritable",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "FITS",
+      "i18nKey": "dengue.reason.fits",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "seizure"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.fits",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "COLD_CLAMMY_EXTREMITIES",
+      "i18nKey": "dengue.reason.cold_clammy_extremities",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "pale, cold or clammy skin"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "Table 2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.coldClammyHandsFeet",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "FAINTING",
+      "i18nKey": "dengue.reason.fainting",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "syncope or giddiness"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "fainting"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.fainting",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "VERY_WEAK_PULSE",
+      "i18nKey": "dengue.reason.very_weak_pulse",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Table 2",
+          "note": "weak and thready peripheral pulses"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox D"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.veryWeakPulse",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "PALE_OR_MOTTLED_SKIN",
+      "i18nKey": "dengue.reason.pale_or_mottled_skin",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "pale skin"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "Table 2",
+          "note": "mottled skin"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.paleOrMottledSkin",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "NO_URINE_6H",
+      "i18nKey": "dengue.reason.no_urine_6h",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.1",
+          "note": "pass urine at least once every six hours; bring to hospital if not passing urine for more than 4-6 hours"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "not passing urine for 12 hr"
+        }
+      ],
+      "note": "WHO supports the 6 hour window used by the spec; NCVBDC PHC advice says 12 hours. The 6 hour window is fixed by the question wording.",
+      "test": {
+        "kind": "num",
+        "field": "urineLast6hOrDiaperCount",
+        "cmp": "eq",
+        "value": 0
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "BREATHING_DIFFICULTY",
+      "i18nKey": "dengue.reason.breathing_difficulty",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "12 item 4",
+          "note": "dyspnoea"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox G"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.breathingDifficulty",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "CHEST_PAIN",
+      "i18nKey": "dengue.reason.chest_pain",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "chest pain or respiratory distress"
+        }
+      ],
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.chestPain",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "JAUNDICE",
+      "i18nKey": "dengue.reason.jaundice",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.4 / Table 5",
+          "note": "hepatitis / hepatic failure as organ dysfunction"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "organ impairment: hepatic"
+        }
+      ],
+      "note": "Jaundice itself is listed in the spec; the sources describe liver involvement rather than jaundice.",
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.jaundice",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN"
+    },
+    {
+      "id": "REDUCED_FETAL_MOVEMENT",
+      "i18nKey": "dengue.reason.reduced_fetal_movement",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.1",
+          "note": "fetal complications in pregnancy"
+        }
+      ],
+      "note": "Spec 5.4 names this sign but gives no level. Treated as EMERGENCY_NOW (cautious). Doctor to decide.",
+      "test": {
+        "kind": "tri",
+        "ref": "symptoms.reducedFetalMovement",
+        "is": "YES"
+      },
+      "unknownPolicy": "UNCERTAIN",
+      "applicableWhen": {
+        "op": "flag",
+        "name": "pregnant"
+      }
+    }
+  ],
+  "noFeverDangerSign": {
+    "id": "SD_DANGER_SIGN_WITHOUT_FEVER",
+    "i18nKey": "dengue.reason.danger_sign_without_fever",
+    "basis": "SAFETY_DEFAULT",
+    "review": "TODO_DOCTOR_REVIEW",
+    "sourceRefs": [],
+    "note": "Spec is silent on danger signs without fever. HOME_CARE requires no matching symptoms, so this never stays at HOME_CARE.",
+    "level": "SEE_DOCTOR_TODAY",
+    "when": {
+      "op": "flag",
+      "name": "anySignPresent"
+    }
+  },
+  "unknownEmergencyRule": {
+    "id": "UNKNOWN_EMERGENCY",
+    "i18nKey": "dengue.reason.unknown_emergency",
+    "basis": "SPEC_PROVISIONAL",
+    "review": "TODO_DOCTOR_REVIEW",
+    "sourceRefs": [],
+    "note": "Spec 5.1 unknown_is_emergency list: can keep fluids down; drowsy/confused; bleeding. Reason ids are UNKNOWN_EMERGENCY:<signId>. The \"when\" field is unused for this rule.",
+    "level": "EMERGENCY_NOW",
+    "when": {
+      "op": "flag",
+      "name": "anySignPresent"
+    }
+  },
+  "uncertainDanger": {
+    "id": "UNCERTAIN_DANGER",
+    "i18nKey": "dengue.reason.uncertain_danger",
+    "basis": "SPEC_PROVISIONAL",
+    "review": "TODO_DOCTOR_REVIEW",
+    "sourceRefs": [],
+    "note": "Spec 5.1: UNKNOWN raises urgency, capped at SEE_DOCTOR_TODAY. Reason ids are UNCERTAIN_DANGER:<signId>. The \"when\" field is unused for this rule.",
+    "level": "SEE_DOCTOR_TODAY",
+    "when": {
+      "op": "flag",
+      "name": "anySignPresent"
+    }
+  },
+  "noDangerSignsReason": {
+    "id": "NO_DANGER_SIGNS_REPORTED",
+    "i18nKey": "dengue.reason.no_danger_signs"
+  },
+  "riskFactors": [
+    {
+      "id": "PREGNANCY",
+      "i18nKey": "dengue.risk.pregnancy",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.1"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "pregnant"
+      }
+    },
+    {
+      "id": "AGE_UNDER_5",
+      "i18nKey": "dengue.risk.age_under_5",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        }
+      ],
+      "note": "See childAgeMonths threshold.",
+      "when": {
+        "op": "num",
+        "field": "ageMonths",
+        "cmp": "lt",
+        "threshold": "childAgeMonths"
+      }
+    },
+    {
+      "id": "AGE_65_PLUS",
+      "i18nKey": "dengue.risk.age_65_plus",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "num",
+        "field": "ageMonths",
+        "cmp": "gte",
+        "threshold": "elderAgeMonths"
+      }
+    },
+    {
+      "id": "DIABETES",
+      "i18nKey": "dengue.risk.diabetes",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.3 (c)"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:DIABETES"
+      }
+    },
+    {
+      "id": "HYPERTENSION",
+      "i18nKey": "dengue.risk.hypertension",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:HYPERTENSION"
+      }
+    },
+    {
+      "id": "HEART_DISEASE",
+      "i18nKey": "dengue.risk.heart_disease",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "congenital heart disease, cardiovascular diseases"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.3 (b)"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:HEART_DISEASE"
+      }
+    },
+    {
+      "id": "KIDNEY_DISEASE",
+      "i18nKey": "dengue.risk.kidney_disease",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "chronic renal failure"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.2",
+          "note": "renal failure"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:KIDNEY_DISEASE"
+      }
+    },
+    {
+      "id": "LIVER_DISEASE",
+      "i18nKey": "dengue.risk.liver_disease",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "chronic liver disease"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.3 (a)"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:LIVER_DISEASE"
+      }
+    },
+    {
+      "id": "BLOOD_DISORDER",
+      "i18nKey": "dengue.risk.blood_disorder",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "haemolytic diseases such as G6PD deficiency, thalassaemia and other haemoglobinopathies"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.2",
+          "note": "chronic haemolytic diseases"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:BLOOD_DISORDER"
+      }
+    },
+    {
+      "id": "OBESITY",
+      "i18nKey": "dengue.risk.obesity",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6",
+          "note": "BMI of 30 or more"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "condition:OBESITY"
+      }
+    },
+    {
+      "id": "PEPTIC_ULCER",
+      "i18nKey": "dengue.risk.peptic_ulcer",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "Box 5",
+          "note": "peptic ulcer disease"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1",
+          "note": "higher risk of haemorrhagic manifestations"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "note": "Added beyond the spec list because all three sources name it. Doctor to confirm.",
+      "when": {
+        "op": "flag",
+        "name": "condition:PEPTIC_ULCER"
+      }
+    },
+    {
+      "id": "ANTICOAGULANT",
+      "i18nKey": "dengue.risk.anticoagulant",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.3 (b)",
+          "note": "patients on anti-platelet or anticoagulant medications should be carefully monitored"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "onAnticoagulant"
+      }
+    },
+    {
+      "id": "LIVES_ALONE_OR_FAR",
+      "i18nKey": "dengue.risk.lives_alone_or_far",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "12 item 8",
+          "note": "living alone or far from a health facility without reliable transport"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E",
+          "note": "social circumstances"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.6"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "livesAloneOrFarFromHospital"
+      }
+    }
+  ],
+  "riskFactorPolicy": {
+    "stepUpRule": {
+      "id": "RISK_FACTOR_STEP_UP",
+      "i18nKey": "dengue.reason.risk_step_up",
+      "steps": 1,
+      "maxLevel": "SEE_DOCTOR_TODAY",
+      "note": "Spec 5.4 says raise one step. Capped at SEE_DOCTOR_TODAY so it agrees with spec 5.3 (fever 3 days or more with a risk factor is SEE_DOCTOR_TODAY, not EMERGENCY_NOW). Only danger signs can reach EMERGENCY_NOW. Doctor to confirm."
+    },
+    "floorRule": {
+      "id": "RISK_FACTOR_FEVER_FLOOR",
+      "i18nKey": "dengue.reason.risk_floor",
+      "daysSinceOnsetThreshold": "riskFloorFeverDays",
+      "level": "SEE_DOCTOR_TODAY"
+    }
+  },
+  "rules": [
+    {
+      "id": "EM_WARNING_AS_FEVER_FALLS",
+      "i18nKey": "dengue.reason.warning_as_fever_falls",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.3",
+          "note": "warning signs usually occur near the end of the febrile phase, at defervescence"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.1.2"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.2",
+          "note": "recognise the critical phase that follows defervescence"
+        }
+      ],
+      "note": "Redundant with the individual sign rules by design: it adds the explanation.",
+      "level": "EMERGENCY_NOW",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverSettled"
+          },
+          {
+            "op": "flag",
+            "name": "anySignPresent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EM_PLATELETS_BELOW_HOSPITAL",
+      "i18nKey": "dengue.reason.platelets_very_low",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "4.3.5"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "13"
+        }
+      ],
+      "note": "Cut-off is a spec placeholder (see threshold).",
+      "level": "EMERGENCY_NOW",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "plateletCount",
+            "cmp": "lt",
+            "threshold": "plateletEmergency"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EM_PLATELET_RAPID_FALL",
+      "i18nKey": "dengue.reason.platelets_falling_fast",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "rapid decrease in platelet count"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.3",
+          "note": "rapid fall of platelet count may indicate progression"
+        }
+      ],
+      "note": "INERT until plateletRapidFallFraction is set by a doctor.",
+      "level": "EMERGENCY_NOW",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "trend",
+            "field": "plateletCount",
+            "dir": "falling",
+            "minRelativeChange": "plateletRapidFallFraction"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EM_HCT_RISING_PLATELETS_FALLING",
+      "i18nKey": "dengue.reason.hematocrit_up_platelets_down",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 2",
+          "note": "progressive increase in haematocrit with a rapid decrease in platelet count"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox C"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1"
+        }
+      ],
+      "note": "\"Falling\" here means any decrease; \"rapid\" is not quantified in the sources.",
+      "level": "EMERGENCY_NOW",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "trend",
+            "field": "hematocrit",
+            "dir": "rising",
+            "minRelativeChange": "hematocritRiseFraction"
+          },
+          {
+            "op": "trend",
+            "field": "plateletCount",
+            "dir": "falling"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EM_TRANSAMINASES_VERY_HIGH",
+      "i18nKey": "dengue.reason.liver_tests_very_high",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.4",
+          "note": "severe dengue"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1 Group C"
+        }
+      ],
+      "level": "EMERGENCY_NOW",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "any",
+            "of": [
+              {
+                "op": "num",
+                "field": "ast",
+                "cmp": "gte",
+                "threshold": "transaminaseSevere"
+              },
+              {
+                "op": "num",
+                "field": "alt",
+                "cmp": "gte",
+                "threshold": "transaminaseSevere"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_PLATELETS_LOW",
+      "i18nKey": "dengue.reason.platelets_low",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "4.3.5"
+        }
+      ],
+      "note": "Cut-off is a spec placeholder (see threshold).",
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "plateletCount",
+            "cmp": "lt",
+            "threshold": "plateletSeeDoctor"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_FEVER_3D_WITH_RISK",
+      "i18nKey": "dengue.reason.fever_3d_with_risk",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.1"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "12"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.2"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "flag",
+            "name": "anyRiskFactor"
+          },
+          {
+            "op": "num",
+            "field": "illnessDay",
+            "cmp": "gte",
+            "threshold": "riskFeverDays"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_INFANT_FEVER",
+      "i18nKey": "dengue.reason.infant_fever",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.2"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "Textbox E"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "ageMonths",
+            "cmp": "lt",
+            "threshold": "infantAgeMonths"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_RASH_PAIN_OUTBREAK",
+      "i18nKey": "dengue.reason.rash_pain_outbreak",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1",
+          "note": "clinical description: headache, retro-orbital pain, myalgia, arthralgia, rash"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "flag",
+            "name": "inOutbreakSeason"
+          },
+          {
+            "op": "tri",
+            "ref": "symptoms.rash",
+            "is": "YES"
+          },
+          {
+            "op": "any",
+            "of": [
+              {
+                "op": "tri",
+                "ref": "symptoms.severeHeadache",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.eyePain",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.bodyPain",
+                "is": "YES"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_POOR_ORAL_INTAKE",
+      "i18nKey": "dengue.reason.poor_oral_intake",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.3",
+          "note": "IV fluids needed with poor oral intake"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "refusal to take orally / poor intake"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "tri",
+            "ref": "symptoms.poorOralIntake",
+            "is": "YES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_NSAID_WITH_STOMACH_PAIN",
+      "i18nKey": "dengue.reason.nsaid_with_stomach_pain",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.2",
+          "note": "avoid aspirin or NSAIDs"
+        },
+        {
+          "doc": "WHO2009",
+          "section": "2.3.2.1",
+          "note": "NSAIDs may aggravate gastritis or bleeding"
+        }
+      ],
+      "note": "An unsure answer about painkillers counts as \"took one\" (cautious).",
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "tri",
+            "ref": "symptoms.stomachPain",
+            "is": "YES"
+          },
+          {
+            "op": "not",
+            "of": {
+              "op": "tri",
+              "ref": "meds.tookNsaidOrAspirin",
+              "is": "NO"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_CHILD_POOR_FEEDING",
+      "i18nKey": "dengue.reason.child_poor_feeding",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "8.1.2"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "refusal to take orally"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "ageMonths",
+            "cmp": "lt",
+            "threshold": "childAgeMonths"
+          },
+          {
+            "op": "tri",
+            "ref": "symptoms.poorFeeding",
+            "is": "YES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_CHILD_FEWER_WET_DIAPERS",
+      "i18nKey": "dengue.reason.child_fewer_wet_diapers",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "10.2",
+          "note": "decreased urinary output"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.3",
+          "note": "decrease in urination; check number of wet diapers"
+        }
+      ],
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "ageMonths",
+            "cmp": "lt",
+            "threshold": "childAgeMonths"
+          },
+          {
+            "op": "tri",
+            "ref": "symptoms.fewerWetDiapers",
+            "is": "YES"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SD_INPUT_ISSUES",
+      "i18nKey": "dengue.reason.input_issues",
+      "basis": "SAFETY_DEFAULT",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [],
+      "note": "Contradictory or malformed input never lowers urgency (spec 2.3).",
+      "level": "SEE_DOCTOR_TODAY",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "flag",
+            "name": "inputInconsistent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "TM_FEVER_IN_OUTBREAK_SEASON",
+      "i18nKey": "dengue.reason.fever_outbreak_season",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 1",
+          "note": "probable dengue: compatible illness during an outbreak"
+        }
+      ],
+      "level": "TEST_AND_MONITOR",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "flag",
+            "name": "inOutbreakSeason"
+          }
+        ]
+      }
+    },
+    {
+      "id": "TM_CRITICAL_PHASE",
+      "i18nKey": "dengue.reason.critical_phase",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "WHO2009",
+          "section": "2.1.2"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "5.1"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.2"
+        }
+      ],
+      "level": "TEST_AND_MONITOR",
+      "when": {
+        "op": "flag",
+        "name": "criticalPhase"
+      }
+    },
+    {
+      "id": "TM_FEVER_OVER_24H",
+      "i18nKey": "dengue.reason.fever_over_24h",
+      "basis": "SPEC_PROVISIONAL",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.1",
+          "note": "duration of fever assessed at triage"
+        }
+      ],
+      "level": "TEST_AND_MONITOR",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "not",
+            "of": {
+              "op": "flag",
+              "name": "feverUnder24h"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "TM_DENGUE_LIKE_SYMPTOMS",
+      "i18nKey": "dengue.reason.dengue_like_symptoms",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1",
+          "note": "clinical description"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.2"
+        },
+        {
+          "doc": "CDC_POCKET",
+          "section": "p.1 Presumptive diagnosis"
+        }
+      ],
+      "level": "TEST_AND_MONITOR",
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "any",
+            "of": [
+              {
+                "op": "tri",
+                "ref": "symptoms.headache",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.eyePain",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.bodyPain",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.rash",
+                "is": "YES"
+              },
+              {
+                "op": "tri",
+                "ref": "symptoms.nausea",
+                "is": "YES"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "TM_LAB_MARKER_POSITIVE",
+      "i18nKey": "dengue.reason.lab_marker_positive",
+      "basis": "SAFETY_DEFAULT",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "4.1 Box 1"
+        }
+      ],
+      "note": "Spec is silent. A positive test never leaves the result at HOME_CARE_WITH_TRIGGERS.",
+      "level": "TEST_AND_MONITOR",
+      "when": {
+        "op": "flag",
+        "name": "anyLabPositive"
+      }
+    }
+  ],
+  "testingAdvice": [
+    {
+      "id": "T_NS1_EARLY",
+      "i18nKey": "dengue.test.ns1_early",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.2"
+        }
+      ],
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "illnessDay",
+            "cmp": "lte",
+            "threshold": "ns1MaxDay"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T_IGM_LATER",
+      "i18nKey": "dengue.test.igm_later",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.2"
+        },
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.1.2"
+        }
+      ],
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "num",
+            "field": "illnessDay",
+            "cmp": "gt",
+            "threshold": "ns1MaxDay"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T_TIMING_UNKNOWN",
+      "i18nKey": "dengue.test.timing_unknown",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.2",
+          "note": "mention day of onset of fever and day of sample collection"
+        }
+      ],
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "not",
+            "of": {
+              "op": "num",
+              "field": "illnessDay",
+              "cmp": "gte",
+              "value": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "T_CBC",
+      "i18nKey": "dengue.test.cbc",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "7.1"
+        }
+      ],
+      "when": {
+        "op": "all",
+        "of": [
+          {
+            "op": "flag",
+            "name": "feverContext"
+          },
+          {
+            "op": "any",
+            "of": [
+              {
+                "op": "flag",
+                "name": "anySignPresent"
+              },
+              {
+                "op": "num",
+                "field": "illnessDay",
+                "cmp": "gt",
+                "threshold": "cbcFeverDays"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "T_TELL_LAB",
+      "i18nKey": "dengue.test.tell_lab",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.2"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "feverContext"
+      }
+    },
+    {
+      "id": "T_NO_RAPID_KITS",
+      "i18nKey": "dengue.test.no_rapid_kits",
+      "basis": "SOURCE",
+      "review": "TODO_DOCTOR_REVIEW",
+      "sourceRefs": [
+        {
+          "doc": "NCVBDC2023",
+          "section": "6.1.7"
+        }
+      ],
+      "when": {
+        "op": "flag",
+        "name": "feverContext"
+      }
+    }
+  ],
+  "criticalPhase": {
+    "noteI18nKey": "dengue.note.critical_phase",
+    "feverGoneNoteI18nKey": "dengue.note.fever_gone"
+  },
+  "levels": {
+    "EMERGENCY_NOW": {
+      "headlineI18nKey": "dengue.headline.emergency",
+      "actions": ["dengue.action.call_help", "dengue.action.dont_wait", "dengue.action.tell_doctor"]
+    },
+    "SEE_DOCTOR_TODAY": {
+      "headlineI18nKey": "dengue.headline.see_doctor",
+      "actions": [
+        "dengue.action.see_doctor_today",
+        "dengue.action.ask_blood_test",
+        "dengue.action.keep_fluids",
+        "dengue.action.check_painkillers",
+        "dengue.action.go_if_worse"
+      ]
+    },
+    "TEST_AND_MONITOR": {
+      "headlineI18nKey": "dengue.headline.test_monitor",
+      "actions": [
+        "dengue.action.get_tested",
+        "dengue.action.review_daily",
+        "dengue.action.keep_fluids",
+        "dengue.action.check_painkillers",
+        "dengue.action.rest",
+        "dengue.action.go_if_worse"
+      ]
+    },
+    "HOME_CARE_WITH_TRIGGERS": {
+      "headlineI18nKey": "dengue.headline.home_care",
+      "actions": [
+        "dengue.action.keep_fluids",
+        "dengue.action.rest",
+        "dengue.action.recheck_if_fever",
+        "dengue.action.go_if_worse"
+      ]
+    }
+  },
+  "watchFor": [
+    "dengue.watch.fever_falls",
+    "dengue.watch.drinks_and_urine",
+    "dengue.watch.new_symptoms",
+    "dengue.watch.daily_notes"
+  ],
+  "returnImmediatelyIf": [
+    "dengue.return.severe_belly_pain",
+    "dengue.return.repeated_vomiting",
+    "dengue.return.bleeding",
+    "dengue.return.sleepy_confused_fit",
+    "dengue.return.cold_pale_clammy",
+    "dengue.return.breathing",
+    "dengue.return.little_urine",
+    "dengue.return.cannot_drink",
+    "dengue.return.worse_as_fever_falls",
+    "dengue.return.severe_headache",
+    "dengue.return.baby_crying"
+  ]
+}
