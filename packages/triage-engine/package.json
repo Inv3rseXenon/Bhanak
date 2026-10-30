@@ -1,0 +1,23 @@
+{
+  "name": "@bhanak/triage-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pure, deterministic, zero-runtime-dependency triage rules engine (spec section 5).",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run --passWithNoTests"
+  }
+}

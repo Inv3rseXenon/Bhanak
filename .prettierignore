@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+coverage
+.turbo
+.next
+out
+pnpm-lock.yaml
+# verbatim copy of the founder's brief; keep byte-for-byte
+docs/SPEC.md
+# source guideline PDFs / extracted text
+docs/sources

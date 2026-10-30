@@ -1,0 +1,23 @@
+{
+  "name": "@bhanak/drug-data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Ingredient/brand seed and duplicate-therapy rules. Everything here is TODO_PHARMACIST_REVIEW until signed off.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run --passWithNoTests"
+  }
+}

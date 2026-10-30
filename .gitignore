@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+.next/
+out/
+*.tsbuildinfo
+
+# env / secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+*.log
+pnpm-debug.log*
+
+# local Claude Code state
+.claude/settings.local.json

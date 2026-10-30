@@ -1,0 +1,22 @@
+#!/bin/sh
+# Pre-commit (spec section 0): lint + format staged files, then typecheck and unit-test
+# only the packages affected by the working tree vs HEAD. Keep this fast.
+
+# On a fresh repo with no commits there is no HEAD to diff against: run everything.
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+  FILTER="--filter=...[HEAD]"
+else
+  FILTER=""
+fi
+
+pnpm exec lint-staged || exit 1
+pnpm exec turbo run typecheck test $FILTER || exit 1
+node tools/check-brand.mjs || exit 1
+
+# Secret scan on staged changes. gitleaks is not an npm package: install it from
+# https://github.com/gitleaks/gitleaks. CI always runs it; locally it runs if installed.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --no-banner || exit 1
+else
+  echo "warning: gitleaks not installed; skipping local secret scan (CI still runs it)" >&2
+fi
