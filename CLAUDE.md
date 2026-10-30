@@ -17,6 +17,7 @@ Bhanak ("a faint first hint that something is coming"; tagline "Bhanak pehle, kh
   - If the source PDFs are not in `docs/sources/`, STOP and ask the founder. Never use memory or blogs for thresholds.
   - Don't paste long passages from copyrighted guidelines: summarise, cite document + section.
 - **No silent stubs.** Unfinished work = visible entry in `docs/TODO.md`; if safety-relevant it must make the build fail (release gates).
+- Git remote: `origin` = https://github.com/Inv3rseXenon/Bhanak.git (branch `main`). The founder wants work committed and pushed there. Never run `husky` by hand with arguments (it treats them as the hooks directory); hooks path must stay `.husky/_`. When running pnpm/turbo from a piped shell, redirect output to a file: a lingering child process can hold the pipe open.
 - Boring technology; simple, typed, tested, documented; solo-maintainable.
 - Commits: Conventional Commits, small. Pre-commit (Husky): lint-staged, typecheck + unit tests on changed packages, gitleaks if installed.
 

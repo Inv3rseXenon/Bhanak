@@ -32,5 +32,5 @@ Environment notes (founder's machine): winget is blocked by Group Policy, so Nod
 
 1. F-002: can you provide the three source PDFs (NCVBDC 2023, WHO 2009, CDC Clinical Care of Dengue) for `docs/sources/`? M1 cannot start clinical content without them.
 2. F-003: who is the reviewing doctor (name, registration number)? Until then every protocol stays `DRAFT`.
-3. Is the GitHub repository created yet (for CI)? Nothing has been pushed anywhere.
+3. Repository: `origin` = https://github.com/Inv3rseXenon/Bhanak.git (founder-specified; commit and push there after every milestone). Commits are authored as `Inv3rseXenon <piyush.company.mail@gmail.com>` (repo-local git config). The first CI run on GitHub has not been observed yet: please check the Actions tab, especially the `secrets` (Docker/gitleaks) and `audit` jobs. Is the repo public or private? `docs/sources/` PDFs are third-party copyrighted material.
 4. Do you want me to try to locate the CDSCO 2026 document title/number now (C-001), or leave it for the regulatory-lawyer step?
