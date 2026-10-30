@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Release gates (spec section 22) already enforced here: lint, typecheck, unit tests,
+# brand-string check, secret scan, high/critical vulnerability audit.
+# Gates that arrive with their milestones (tracked in docs/TODO.md, not silently skipped):
+#   M1  scenario suite + 100% engine branch coverage
+#   M2  banned-words check on UI copy, axe a11y, Playwright e2e, Lighthouse CI budgets,
+#       "no secrets in web bundle" scan, unreviewed-protocol prod gate
+#   M3+ Trivy container scan
+#   M9  CodeQL, OWASP ZAP baseline, SBOM (CycloneDX), k6 load test
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # version comes from "packageManager" in package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm check:brand
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Container run avoids the gitleaks-action licence requirement for organisations.
+      # TODO(docs/TODO.md): pin the image to a specific version.
+      - name: gitleaks
+        run: |
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
+            git /repo --redact --no-banner --exit-code 1
+
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
