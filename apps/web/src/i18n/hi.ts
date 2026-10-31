@@ -113,6 +113,7 @@ export const hi: Record<MessageKey, string> = {
   'error.age': 'सही उम्र लिखें।',
   'error.count': 'पूरी संख्या लिखें, या "मुझे पक्का नहीं पता" चुनें।',
   'error.temp': '34 से 43 °C के बीच तापमान लिखें, या छोड़ दें।',
+  'error.tempF': '93 से 110 °F के बीच तापमान लिखें, या छोड़ दें।',
   'error.number': 'सिर्फ़ संख्याएँ लिखें।',
 
   // ---- intake: questions ----
@@ -149,8 +150,9 @@ export const hi: Record<MessageKey, string> = {
   'intake.onset.d7': '7 दिन पहले',
   'intake.onset.d8': '8 या अधिक दिन पहले',
   'intake.maxTemp.title': 'सबसे ज़्यादा नापा गया तापमान कितना था?',
-  'intake.maxTemp.help': '°C में, जैसे 38.5। नापा नहीं गया तो छोड़ दें।',
-  'intake.maxTemp.label': 'तापमान (°C)',
+  'intake.maxTemp.help':
+    'जैसे 38.5 °C या 101.3 °F। थर्मामीटर जो इकाई दिखाता है, वही चुनें। नापा नहीं गया तो छोड़ दें।',
+  'intake.maxTemp.label': 'तापमान',
   'intake.fluids.title': 'क्या व्यक्ति पी सकता है, और पिया हुआ रुक पाता है?',
   'intake.fluids.help':
     'अगर व्यक्ति पी नहीं सकता, पीने से मना करता है, या पिया हुआ उलट देता है, तो "नहीं" चुनें।',

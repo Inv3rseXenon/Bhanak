@@ -197,7 +197,9 @@ describe('what-to-watch-for carousel', () => {
 function visibleText(container: Element): string {
   const clone = container.cloneNode(true) as Element;
   // Document titles of the cited guidelines are proper nouns; the wordmark is the logo.
-  for (const node of clone.querySelectorAll('[lang="en"], .logo, [data-testid="record"]')) {
+  for (const node of clone.querySelectorAll(
+    '[lang="en"], .logo, .footer-logo, [data-testid="record"]',
+  )) {
     node.remove();
   }
   return clone.textContent;

@@ -258,7 +258,11 @@ export function validateStep(step: Step, answers: Answers): string | null {
       const text = str(answers.maxTemp);
       if (text === undefined || text === '' || text === 'UNKNOWN') return null;
       const value = parseNumber(text);
-      return value >= 34 && value <= 43 ? null : 'error.temp';
+      return inRange(value, tempUnit(answers))
+        ? null
+        : tempUnit(answers) === 'F'
+          ? 'error.tempF'
+          : 'error.temp';
     }
     case 'labs': {
       for (const field of LAB_FIELDS) {
@@ -270,6 +274,21 @@ export function validateStep(step: Step, answers: Answers): string | null {
       return null;
     }
   }
+}
+
+export type TempUnit = 'C' | 'F';
+
+/** The unit the person is typing in: Celsius unless they chose Fahrenheit. */
+export const tempUnit = (answers: Answers): TempUnit => (str(answers.tempUnit) === 'F' ? 'F' : 'C');
+
+/** Realistic body temperatures: 34 to 43 degrees C, which is 93.2 to 109.4 degrees F. */
+const inRange = (value: number, unit: TempUnit): boolean =>
+  unit === 'F' ? value >= 93 && value <= 110 : value >= 34 && value <= 43;
+
+/** Celsius to one decimal place, from what the person typed. */
+export function toCelsius(value: number | undefined, unit: TempUnit): number | undefined {
+  if (value === undefined) return undefined;
+  return unit === 'F' ? Math.round(((value - 32) * 50) / 9) / 10 : value;
 }
 
 /** Local calendar date (YYYY-MM-DD) `daysAgo` days before `now`, at the given UTC offset. */
@@ -321,7 +340,7 @@ export function toTriageInput(answers: Answers, now: Date, utcOffsetMinutes: num
     }
   }
 
-  const maxTemp = optionalNumber(answers.maxTemp);
+  const maxTemp = toCelsius(optionalNumber(answers.maxTemp), tempUnit(answers));
   const vomiting = optionalNumber(answers.vomiting);
   const urine = optionalNumber(answers.urine);
 

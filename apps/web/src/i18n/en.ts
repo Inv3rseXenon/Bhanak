@@ -111,6 +111,7 @@ export const en = {
   'error.age': 'Enter a valid age.',
   'error.count': 'Enter a whole number, or choose "I\'m not sure".',
   'error.temp': 'Enter a temperature between 34 and 43 °C, or skip.',
+  'error.tempF': 'Enter a temperature between 93 and 110 °F, or skip.',
   'error.number': 'Enter numbers only.',
 
   // ---- intake: questions ----
@@ -147,8 +148,9 @@ export const en = {
   'intake.onset.d7': '7 days ago',
   'intake.onset.d8': '8 or more days ago',
   'intake.maxTemp.title': 'What is the highest temperature measured?',
-  'intake.maxTemp.help': 'In °C, for example 38.5. Skip if it was not measured.',
-  'intake.maxTemp.label': 'Temperature (°C)',
+  'intake.maxTemp.help':
+    'For example 38.5 °C or 101.3 °F. Choose the unit your thermometer shows. Skip if it was not measured.',
+  'intake.maxTemp.label': 'Temperature',
   'intake.fluids.title': 'Can the person drink, and keep the drinks down?',
   'intake.fluids.help':
     'Answer No if the person cannot drink, refuses to drink, or vomits the drinks.',

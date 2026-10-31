@@ -377,3 +377,44 @@ describe('end to end: answers -> engine -> result', () => {
     expect(evaluate(input, protocol, now).level).toBe(level(answers));
   });
 });
+
+describe('temperature in Celsius or Fahrenheit', () => {
+  const tempStep = visibleSteps({ feverNow: 'YES' }).find((s) => s.id === 'maxTemp');
+  if (tempStep === undefined) throw new Error('no temperature step');
+
+  it('sends Celsius to the engine, converting Fahrenheit to one decimal', () => {
+    const celsius = (answers: Answers) =>
+      toTriageInput({ ...baseAnswers(), ...answers }, now, IST).illness.maxTempC;
+    expect(celsius({ maxTemp: '38.5' })).toBe(38.5);
+    expect(celsius({ maxTemp: '38.5', tempUnit: 'C' })).toBe(38.5);
+    expect(celsius({ maxTemp: '101.3', tempUnit: 'F' })).toBe(38.5);
+    expect(celsius({ maxTemp: '98.6', tempUnit: 'F' })).toBe(37);
+    expect(celsius({ maxTemp: '104', tempUnit: 'F' })).toBe(40);
+    expect(celsius({ maxTemp: '102', tempUnit: 'F' })).toBe(38.9);
+  });
+
+  it('accepts only realistic readings in the unit chosen', () => {
+    expect(validateStep(tempStep, { maxTemp: '38.5' })).toBeNull();
+    expect(validateStep(tempStep, { maxTemp: '101.3', tempUnit: 'F' })).toBeNull();
+    // 101 is a fine Fahrenheit reading and an impossible Celsius one.
+    expect(validateStep(tempStep, { maxTemp: '101' })).toBe('error.temp');
+    // 38.5 is a fine Celsius reading and an impossible Fahrenheit one.
+    expect(validateStep(tempStep, { maxTemp: '38.5', tempUnit: 'F' })).toBe('error.tempF');
+    expect(validateStep(tempStep, { maxTemp: '120', tempUnit: 'F' })).toBe('error.tempF');
+    expect(validateStep(tempStep, { maxTemp: '93', tempUnit: 'F' })).toBeNull();
+    expect(validateStep(tempStep, { maxTemp: '110', tempUnit: 'F' })).toBeNull();
+  });
+
+  it('can be skipped in either unit', () => {
+    expect(validateStep(tempStep, { maxTemp: 'UNKNOWN', tempUnit: 'F' })).toBeNull();
+    expect(validateStep(tempStep, { tempUnit: 'F' })).toBeNull();
+  });
+
+  it('gives the engine the same result whichever unit was typed', () => {
+    const level = (answers: Answers): string => {
+      const input = toTriageInput({ ...baseAnswers(), ...answers }, now, IST);
+      return evaluate(input, protocol, now).level;
+    };
+    expect(level({ maxTemp: '39.4' })).toBe(level({ maxTemp: '102.9', tempUnit: 'F' }));
+  });
+});

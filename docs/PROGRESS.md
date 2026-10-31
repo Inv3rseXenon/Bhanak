@@ -47,6 +47,11 @@ Not done and not verified: the first GitHub Actions run (T-006); real-device scr
 - Home page rebuilt around starting the check: hero with the first question as three large doors, trilingual signboard title, original illustrations of an Indian hospital, outcome signs, the watch-for carousel, where to go in an emergency, questions and sources, closing call to action. Full-width layout; two columns with an illustration in the check flow on wide screens.
 - Pictures are my SVG drawings, not photographs (W-015, W-016). Web tests: 137.
 
+### Polish and Fahrenheit (2026-10-31)
+
+- The temperature question takes °C or °F; the engine always receives °C (Q-004).
+- A floating Emergency button on every screen, a deep footer with the tagline and quick links, the founder line marked with the hint-orange bar, doors that lift on hover, answers that confirm with a small tick animation. Web tests: 141.
+
 ## M1 — done
 
 Built:

@@ -114,22 +114,36 @@ export function Shell({ children }: { children: ReactNode }) {
       <main id="main" tabIndex={-1}>
         {children}
       </main>
+      <Link href="/emergency/" className="fab-emergency">
+        <PhoneIcon />
+        {t('nav.emergency')}
+      </Link>
       <footer className="site-footer">
         <div className="footer-inner">
-          <p className="disclaimer">{t('footer.disclaimer')}</p>
-          {TESTER_MODE ? (
-            <p>
+          <div className="footer-brand">
+            <p className="footer-logo">
+              <Logo />
+              <span>{brand.wordmark}</span>
+            </p>
+            <p className="footer-tagline">{t('landing.tagline')}</p>
+            <p className="footer-companion">{t('landing.taglineCompanion')}</p>
+          </div>
+          <div className="footer-links">
+            <Link href="/check/">{t('nav.check')}</Link>
+            <Link href="/emergency/">{t('nav.emergency')}</Link>
+            {TESTER_MODE ? (
               <a
-                className="button button-secondary"
                 href={FEEDBACK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="feedback-link"
+                className="button button-light"
               >
                 {t('footer.feedback')}
               </a>
-            </p>
-          ) : null}
+            ) : null}
+          </div>
+          <p className="disclaimer">{t('footer.disclaimer')}</p>
           <p className="meta">
             {t('footer.rules', { protocol: protocol.version, engine: ENGINE_VERSION })}
           </p>

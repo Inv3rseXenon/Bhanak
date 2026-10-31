@@ -6,7 +6,14 @@ import { TESTER_MODE } from '../config';
 import { useI18n } from '../i18n/I18nProvider';
 import { assess } from '../lib/assess';
 import type { Assessment } from '../lib/assess';
-import { LAB_FIELDS, LAB_TESTS, toTriageInput, validateStep, visibleSteps } from '../lib/intake';
+import {
+  LAB_FIELDS,
+  LAB_TESTS,
+  tempUnit,
+  toTriageInput,
+  validateStep,
+  visibleSteps,
+} from '../lib/intake';
 import type { Answers, Step } from '../lib/intake';
 import { protocol } from '../lib/protocol';
 import { FailSafeView } from './FailSafeView';
@@ -210,9 +217,25 @@ function StepBody({
               set('maxTemp', event.target.value);
             }}
           />
+          <div role="radiogroup" aria-label={t('intake.maxTemp.label')} className="unit-switch">
+            {(['C', 'F'] as const).map((unit) => (
+              <button
+                key={unit}
+                type="button"
+                role="radio"
+                aria-checked={tempUnit(answers) === unit}
+                className="choice"
+                onClick={() => {
+                  set('tempUnit', unit);
+                }}
+              >
+                {unit === 'C' ? '°C' : '°F'}
+              </button>
+            ))}
+          </div>
           <button
             type="button"
-            className="choice"
+            className="choice choice-plain"
             onClick={() => {
               advance({ maxTemp: 'UNKNOWN' });
             }}
