@@ -4,9 +4,37 @@ A fresh session can resume from this file plus [CLAUDE.md](../CLAUDE.md) and [do
 
 ## Current state
 
-- **Last completed milestone: M1** (triage engine + protocol schema + dengue protocol v0.1.0 DRAFT + 163 scenarios + property tests + coverage gate).
-- **Next: M2** (anonymous triage web app). Not started. Wait for the founder's go-ahead and answers to the open questions below.
+- **Last completed milestone: M2** (anonymous triage web app) **plus the private tester release** (`TESTER_MODE` build and Cloudflare Pages / Netlify runbook). Built on M1 (triage engine, protocol schema, dengue protocol v0.1.0 DRAFT, 163 scenarios).
+- **Next: M3** (API foundation). Not started. Wait for the founder's go-ahead and answers to the open questions below.
+- The protocol is still a **DRAFT**: no doctor has reviewed it. Nothing public can be built (`pnpm build:release` refuses). Hindi and Marathi are first drafts behind a "translation under review" badge.
 - Working mode: stop after each milestone and wait for the founder's go-ahead.
+
+## M2 and tester release — done
+
+Built:
+
+- `apps/web` (Next.js 16 static export, React 19, plain CSS; no Tailwind, Radix or i18next yet, see ADR 0021): landing page; guided intake (one question per screen, up to 40 screens with branching, Back keeps answers, "I'm not sure" on every danger question, emergency numbers on every screen); result screen (level with icon, colour and text, what to do, why, risk factors, critical-phase note, testing, watch-for, go-immediately list, Call 108 / 112 / find hospital, copy-or-share summary, start again); emergency screen; the spec 2.3 fail-safe screen; English, Hindi and Marathi with a "translation under review" badge.
+- Hindi and Marathi first-pass translations of all 100 protocol strings (`packages/protocols/dengue/v0.1.0.strings.hi.json`, `.mr.json`) and of the web UI strings. Tests require the same keys, numbers and placeholders as English.
+- **Tester release (all six requested items):**
+  1. `TESTER_MODE` build flag. Banner on every screen in en/hi/mr with the exact text requested, sticky at the top. `pnpm build:tester` sets it.
+  2. Display floor (`apps/web/src/lib/display.ts`): HOME_CARE_WITH_TRIGGERS is never shown, TEST_AND_MONITOR is the minimum, with "If you are unsure, see a doctor." Unit tests prove it never lowers any level, for all four levels and for all 163 scenarios using the real engine and protocol. The engine, protocol, thresholds and scenarios are untouched.
+  3. noindex meta tag and `robots.txt` `Disallow: /` (and an `X-Robots-Tag` header); no analytics, no cookies; nothing sent to any server (tests scan the source; a Content-Security-Policy with `connect-src 'self'` enforces it in the browser; `verify-output.mjs` scans the built files). The only thing remembered is the chosen language (`localStorage`).
+  4. "Send feedback" link (placeholder Google Form URL until `FEEDBACK_URL` is set; TODO W-001).
+  5. `docs/runbooks/tester-deploy.md`: build command `pnpm build:tester`, output directory `apps/web/out`, direct-upload and Git-connected steps for Cloudflare Pages and Netlify, access control, form notice, post-deploy checks, smoke checks.
+  6. This file, committed.
+- **Release gate for the web build**: `apps/web/scripts/verify-protocol.mjs` refuses a DRAFT protocol unless drafts are explicitly allowed in development, staging or test. `pnpm build:release` fails now, as it should; `APP_ENV=production` with drafts allowed is refused; `TESTER_MODE=true` cannot be combined with production; a mistyped `TESTER_MODE` fails the build. CI runs the production build and expects it to fail (G-006).
+- Verified in a real browser against the built tester site (mobile viewport): banner, a no-fever case shown as "Get tested and keep watching" with the unsure note, no cookies, nothing in storage, every request same-origin.
+
+Tests: web 105 (display floor, intake mapping, i18n parity and banned claims, release gate, privacy, screens with axe), protocols 34 (28 + hi/mr string checks), engine 212 (100% coverage), shared 9. `pnpm check` passes.
+
+Assumptions and deviations (all in ADR 0021):
+
+- Plain CSS and a small typed i18n instead of the full ADR 0003/0004 stack for now; system fonts (no font download).
+- Intake wording, answer mapping ("not sure" means yes for pregnancy, blood thinner, lives alone), the "8 or more days" onset option and the lab entry screen are my choices and need the doctor (TODO Q-001 to Q-003, checklist section "Intake questions and screens").
+- Anonymous results are not stored in M2 (W-005); there is no service worker, so no offline use yet (W-010, M7).
+- Initial JavaScript on `/check/` is about 204 KB gz, slightly over the 200 KB budget (P-001).
+
+Not done and not verified: the first GitHub Actions run (T-006); real-device screen-reader testing; colour contrast was checked by design (all pairs at least 4.5:1) but not with a tool; LCP and CLS.
 
 ## M1 — done
 
@@ -60,3 +88,7 @@ Environment notes (founder's machine): winget is blocked by Group Policy, so Nod
 3. **Repository**: is `https://github.com/Inv3rseXenon/Bhanak.git` public or private? If private and you want the guideline PDFs tracked, remove `docs/sources/*.pdf` from `.gitignore`. The first CI run on GitHub has not been observed yet (check the Actions tab: `secrets` and `audit` jobs especially). Commits are authored as `Inv3rseXenon <piyush.company.mail@gmail.com>`.
 4. **CDSCO 2026 document (C-001)**: shall I try to locate its exact title/number, or leave it for the regulatory-lawyer step?
 5. **Clinical readings in section "Deviations"** above: please confirm the step-up cap and the UNKNOWN reading, or tell me to change them.
+6. **Feedback form (W-001)**: create the Google Form and give me the link (or set `FEEDBACK_URL` when you build). Until then "Send feedback" opens a placeholder address.
+7. **Who may see the tester site?** An unguessable link plus noindex is not access control. If testers must be limited to named people, use Cloudflare Access (see the runbook), or tell me and I will add a simple passcode screen.
+8. **Hindi and Marathi** (L-001, F-004): my drafts need a native-speaking doctor. Also, do you want the home headline and tagline in Hindi and Marathi (W-006)?
+9. **Hosting choice**: Cloudflare Pages or Netlify? The runbook covers both; the direct-upload route needs no build setup on the host.

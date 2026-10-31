@@ -25,6 +25,8 @@ Short ADRs for every technology in spec section 3: why chosen, alternatives reje
 | 0019 | [Toolchain versions and package module format](0019-toolchain-and-module-format.md)                       | Accepted                                |
 | 0020 | [Protocols are data, with a small closed condition language](0020-protocol-as-data-condition-language.md) | Accepted                                |
 
+| 0021 | [Web app (M2): built, deferred, and the tester display floor](0021-web-app-m2-decisions.md) | Accepted |
+
 Template:
 
 ```

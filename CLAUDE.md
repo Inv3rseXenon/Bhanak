@@ -68,7 +68,9 @@ Brand voice: warm, plain, calm; never scary or jokey about illness. Languages en
 
 ```bash
 pnpm install            # install (Node >=24, pnpm 10 — see packageManager)
-pnpm build              # turbo run build
+pnpm build              # turbo run build with drafts allowed (APP_ENV=test): dev and CI
+pnpm build:tester       # private tester site -> apps/web/out (TESTER_MODE=true); deploy: docs/runbooks/tester-deploy.md
+pnpm build:release      # production gate: FAILS while the protocol is a DRAFT (that is correct)
 pnpm lint               # turbo run lint
 pnpm typecheck          # turbo run typecheck (builds deps first)
 pnpm test               # turbo run test
@@ -90,8 +92,8 @@ Any scenario failure · engine branch coverage <100% · unreviewed protocol in p
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | M0  | Monorepo, tooling, CI skeleton, CLAUDE.md, brand.ts, ADRs for the stack                                                                  | done   |
 | M1  | triage-engine + protocol schema + dengue protocol v0.1.0 (DRAFT, cited) + 150 scenarios + property tests + coverage gate                 | done   |
-| M2  | Anonymous triage web app (no backend): guided intake, result, emergency screen, i18n en/hi/mr, a11y baseline, DRAFT banner, landing page | next   |
-| M3  | API foundation: Prisma, auth (signup/OTP/login/refresh/sessions/reset/TOTP), RBAC, audit, rate limits, encryption — all tested           |        |
+| M2  | Anonymous triage web app (no backend): guided intake, result, emergency screen, i18n en/hi/mr, a11y baseline, DRAFT banner, landing page | done   |
+| M3  | API foundation: Prisma, auth (signup/OTP/login/refresh/sessions/reset/TOTP), RBAC, audit, rate limits, encryption — all tested           | next   |
 | M4  | Accounts UX: profile, dependents, emergency contacts, consents, claim anonymous results, export/delete                                   |        |
 | M5  | Diary, labs, episode view, doctor-summary PDF                                                                                            |        |
 | M6  | Medicine manager, schedules, dose events, flagged warnings, web-push reminders, caregiver alerts                                         |        |
@@ -104,6 +106,17 @@ Any scenario failure · engine branch coverage <100% · unreviewed protocol in p
 ## Definition of done (every milestone)
 
 Typecheck, lint, all tests green · every TODO has an entry in `docs/TODO.md` · no secrets · docs updated · manual smoke script in the summary · list of assumptions and questions for the founder.
+
+## Web app: working notes (M2)
+
+- `apps/web`: Next.js static export, React, plain CSS (ADR 0021 lists what was deferred from ADR 0003/0004). Pages: `/` landing, `/check` intake and result, `/emergency`. Details: `apps/web/README.md`.
+- The web app never decides urgency: it maps answers to `TriageInput` (`src/lib/intake.ts`), calls `evaluate` (`src/lib/assess.ts`) and shows the result. Engine error, unknown level or an empty "return immediately" list shows the spec 2.3 fail-safe screen.
+- `TESTER_MODE` is a build flag (`TESTER_MODE=true`, set by `pnpm build:tester`). It adds the banner on every screen, noindex, a feedback link, and a **display floor** (`src/lib/display.ts`): never shown below "Get tested and keep watching". It only raises what is displayed; do not move it into the engine or the protocol, and never change a clinical rule or number to suit it.
+- Build gate: `apps/web/scripts/verify-protocol.mjs` runs before every build and refuses a DRAFT protocol unless `ALLOW_DRAFT_PROTOCOL=true` with `APP_ENV` development, staging or test. `pnpm build:release` therefore fails until a named doctor has reviewed the protocol. `verify-output.mjs` checks the exported site.
+- Nothing leaves the device: no network calls, cookies, analytics or third-party scripts (`test/private-release.test.ts` enforces it). The only stored value is the chosen language.
+- Strings: add to `src/i18n/en.ts` first; `hi.ts` and `mr.ts` must have the same keys. Clinical strings live in `packages/protocols/dengue/*.strings.<locale>.json`. Hindi and Marathi are first drafts behind a "translation under review" badge (TODO L-001); never remove the badge without a named reviewer.
+- The Hindi, Marathi and English intake questions are clinical wording for the reviewing doctor (checklist section "Intake questions and screens", TODO Q-001).
+- After editing the protocol or strings, run `pnpm --filter @bhanak/protocols generate` and the full `pnpm check`.
 
 ## Triage engine and protocol: working notes (M1)
 

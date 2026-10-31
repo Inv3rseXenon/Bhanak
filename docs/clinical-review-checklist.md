@@ -28,8 +28,27 @@ These are the places where the sources do not give the number or the rule, or wh
 
 - The NSAID/aspirin "check with your doctor or pharmacist" prompt wording (spec 2.8): `dengue.action.check_painkillers`.
 - Missed-dose wording (spec 12): not yet written (M6).
-- The fail-safe screen text (spec 2.3): not yet written (M2).
-- All Hindi and Marathi clinical strings: `needs_review` until a native-speaking doctor approves them (M2).
+- The fail-safe screen text (spec 2.3): written in M2 exactly as the spec words it (`failsafe.body` in `apps/web/src/i18n/en.ts`), with Hindi and Marathi drafts. The doctor should confirm it.
+- All Hindi and Marathi clinical strings: first-pass drafts exist since M2 (`packages/protocols/dengue/v0.1.0.strings.hi.json` and `.mr.json`, plus `apps/web/src/i18n/hi.ts` and `mr.ts`). They stay `needs_review`, shown with a visible badge, until a native-speaking doctor approves them (TODO L-001).
+
+## Intake questions and screens (M2, TODO Q-001)
+
+The question wording is in `apps/web/src/i18n/en.ts` (keys `q.*` and `intake.*`), not in the protocol, so the generated list below does not include it. The doctor should review:
+
+1. **The danger questions** (`q.*.title`): plain-language wording for each danger sign, asked as Yes / No / "I'm not sure". For example "Is the person very sleepy, or unusually weak and slow?" and "Does the person have strong belly pain, or belly pain that is getting worse?".
+2. **"Can the person drink, and keep the drinks down?"** (Yes means able to). An unsure answer is treated as an emergency (spec 5.1).
+3. **Counts**: vomiting episodes in the last 24 hours and times urine was passed in the last 6 hours (wet diapers for under 12 months).
+4. **The painkiller question** and its help text ("These may not be safe when dengue is possible"): names ibuprofen, diclofenac, aspirin and mefenamic acid as in spec 2.8. Pharmacist check for the drug names (docs/pharmacist-review-checklist.md).
+5. **Pregnancy question**: asked from age 10 to 55 for anyone not male; "not sure" is treated as pregnant. Confirm the age band.
+6. **"Takes a medicine to thin the blood"**, and **"lives alone or far from a hospital"**: "not sure" is treated as yes (cautious).
+7. **Onset of fever** is asked as "N days ago" (0 to 7, and "8 or more"); the engine counts illness days from it. The onset question is skipped only when the person has no fever now and none in the last 2 days.
+8. **Other symptoms** list (headache, severe headache, eye pain or pain behind the eyes, body or joint pain, rash, nausea) and the single questions on stomach pain and eating or drinking very little.
+9. **Lab entry**: platelets per microlitre, haematocrit %, AST and ALT in U/L, and NS1, IgM and IgG results. A platelet count typed in thousands is read as a very low count (cautious).
+10. **Result screen wording**: the headings ("What to do now", "Why we say this", "Go to a hospital immediately if", and so on) and the level names ("Emergency", "See a doctor today", "Get tested and keep watching", "Home care, with warning signs").
+
+## Tester build display floor (M2)
+
+Private tester builds never show "Home care, with warning signs": the lowest level shown is "Get tested and keep watching", with "If you are unsure, see a doctor." This is an over-triage safeguard for the draft period and a **display change only**: the engine, the protocol and its scenarios are unchanged. It does not stand in for the doctor's review, and a public release does not use it.
 - Calibration: over-triage teaches people to ignore the app. The doctor calibrates thresholds using the level distribution (M9); the code never relaxes a rule automatically.
 
 ## Generated list of open items
