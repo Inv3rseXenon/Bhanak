@@ -30,3 +30,6 @@ pnpm-debug.log*
 
 # third-party copyrighted guideline PDFs: kept local until the founder confirms the repo is private
 docs/sources/*.pdf
+
+# Next.js generated
+next-env.d.ts

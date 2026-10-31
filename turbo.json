@@ -3,8 +3,19 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**", "package.json", "tsconfig*.json", "$TURBO_ROOT$/tsconfig.base.json"],
-      "outputs": ["dist/**"]
+      "inputs": [
+        "src/**",
+        "public/**",
+        "scripts/**",
+        "next.config.mjs",
+        "package.json",
+        "tsconfig*.json",
+        "$TURBO_ROOT$/tsconfig.base.json",
+        "$TURBO_ROOT$/packages/protocols/dengue/**"
+      ],
+      "env": ["APP_ENV", "ALLOW_DRAFT_PROTOCOL", "TESTER_MODE", "FEEDBACK_URL", "WAITLIST_URL"],
+      "passThroughEnv": ["NEXT_TELEMETRY_DISABLED"],
+      "outputs": ["dist/**", "out/**"]
     },
     "typecheck": {
       "dependsOn": ["^build"],
@@ -25,6 +36,8 @@
       "inputs": [
         "src/**",
         "test/**",
+        "public/**",
+        "scripts/**",
         "package.json",
         "vitest.config.*",
         "$TURBO_ROOT$/packages/protocols/dengue/**",

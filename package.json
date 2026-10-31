@@ -8,7 +8,9 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "build": "turbo run build",
+    "build": "node tools/with-env.mjs APP_ENV=test ALLOW_DRAFT_PROTOCOL=true NEXT_TELEMETRY_DISABLED=1 -- turbo run build",
+    "build:release": "node tools/with-env.mjs NEXT_TELEMETRY_DISABLED=1 -- turbo run build",
+    "build:tester": "node tools/with-env.mjs APP_ENV=staging ALLOW_DRAFT_PROTOCOL=true TESTER_MODE=true NEXT_TELEMETRY_DISABLED=1 -- turbo run build --filter=@bhanak/web...",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

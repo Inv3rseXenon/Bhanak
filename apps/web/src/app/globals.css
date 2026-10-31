@@ -1,0 +1,444 @@
+/*
+ * Palette (spec 1): ink #0F2229, teal #0A6B66, alert red #9F1D0B, "hint" orange #B54708
+ * (5.4:1 on white). Every text/background pair below is at least 4.5:1.
+ * Fonts: system stack only for now (no downloads); Devanagari falls back to the device font.
+ * Low-data by design: no images, no web fonts.
+ */
+:root {
+  --ink: #0f2229;
+  --muted: #3d5058;
+  --teal: #0a6b66;
+  --red: #9f1d0b;
+  --orange: #b54708;
+  --slate: #2f4858;
+  --paper: #ffffff;
+  --tint: #eef6f5;
+  --line: #b9c8cc;
+  --warn-bg: #fff3c4;
+  --radius: 12px;
+  --tap: 48px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Noto Sans',
+    'Noto Sans Devanagari',
+    'Nirmala UI',
+    'Mangal',
+    sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 1.2em 0 0.5em;
+}
+h1 {
+  font-size: 1.65rem;
+  margin-top: 0.6em;
+}
+h2 {
+  font-size: 1.25rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+p {
+  margin: 0.6em 0;
+}
+ul,
+ol {
+  padding-left: 1.3em;
+}
+li {
+  margin: 0.35em 0;
+}
+a {
+  color: var(--teal);
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* ---- banners (persistent, top of every screen) ---- */
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--warn-bg);
+  color: var(--ink);
+  border-bottom: 3px solid var(--orange);
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.banner-tester {
+  background: #ffe08a;
+}
+
+.review-note {
+  background: var(--tint);
+  border-bottom: 1px solid var(--line);
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+}
+.badge {
+  background: var(--orange);
+  color: #fff;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+/* ---- header / footer ---- */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: var(--tap);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.site-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 0.9rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav-emergency {
+  background: var(--red);
+  color: #fff;
+}
+.lang-switch {
+  display: flex;
+  gap: 0.25rem;
+  width: 100%;
+}
+.lang-switch button {
+  min-height: var(--tap);
+  flex: 1;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  font: inherit;
+  cursor: pointer;
+}
+.lang-switch button[aria-pressed='true'] {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+  font-weight: 700;
+}
+
+.container {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 2rem;
+}
+.container:focus {
+  outline: none;
+}
+
+.site-footer {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+  border-top: 1px solid var(--line);
+}
+.disclaimer {
+  font-weight: 600;
+}
+.meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---- buttons ---- */
+.button,
+.choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius);
+  border: 2px solid var(--teal);
+  background: var(--paper);
+  color: var(--teal);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button-primary {
+  background: var(--teal);
+  color: #fff;
+}
+.button-danger {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+.button-secondary {
+  background: var(--paper);
+  color: var(--teal);
+}
+
+/* ---- landing ---- */
+.hero h1 {
+  font-size: 1.9rem;
+}
+.eyebrow {
+  color: var(--orange);
+  font-weight: 700;
+  margin-bottom: 0;
+}
+.lead {
+  font-size: 1.15rem;
+}
+.tagline {
+  font-weight: 700;
+}
+.tagline span {
+  color: var(--muted);
+  font-weight: 400;
+}
+.hero-actions,
+.call-buttons,
+.result-actions,
+.nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.steps {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.steps li {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.25rem 1rem 0.75rem;
+}
+.steps h3 {
+  margin-top: 0.7em;
+}
+.note-box {
+  background: var(--tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem 0.75rem;
+}
+.return-box {
+  border: 2px solid var(--red);
+  border-radius: var(--radius);
+  padding: 0.25rem 1rem 0.75rem;
+}
+
+/* ---- intake ---- */
+.emergency-bar {
+  background: #fdecea;
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.9rem;
+  margin: 0.75rem 0;
+  font-weight: 600;
+}
+.emergency-bar a {
+  color: var(--red);
+  font-weight: 800;
+}
+.progress-text {
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.progress {
+  height: 8px;
+  background: var(--tint);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.progress > div {
+  height: 100%;
+  background: var(--teal);
+}
+.help {
+  color: var(--muted);
+}
+.choices {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.choices .choice {
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+}
+.choice[aria-pressed='true'],
+.choice[aria-checked='true'] {
+  background: var(--teal);
+  color: #fff;
+}
+.choice-check {
+  gap: 0.75rem;
+}
+.choice-check input {
+  width: 1.5rem;
+  height: 1.5rem;
+  accent-color: var(--teal);
+}
+.field-label {
+  display: block;
+  font-weight: 700;
+  margin: 0.9rem 0 0.3rem;
+}
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--slate);
+  border-radius: var(--radius);
+  font: inherit;
+  background: var(--paper);
+  color: var(--ink);
+}
+.unit-switch {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+.unit-switch .choice {
+  flex: 1;
+  justify-content: center;
+}
+.error {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* ---- result ---- */
+.level-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #fff;
+}
+.level-card svg {
+  flex: none;
+  margin-top: 0.2rem;
+}
+.level-EMERGENCY_NOW {
+  background: var(--red);
+}
+.level-SEE_DOCTOR_TODAY {
+  background: var(--orange);
+}
+.level-TEST_AND_MONITOR {
+  background: var(--teal);
+}
+.level-HOME_CARE_WITH_TRIGGERS {
+  background: var(--slate);
+}
+.level-label {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+.level-headline {
+  font-size: 1.15rem;
+  margin: 0.25rem 0 0;
+}
+.level-unsure {
+  font-weight: 700;
+  margin: 0.5rem 0 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button,
+  .choice {
+    transition: background-color 0.15s;
+  }
+}
+@media (min-width: 40rem) {
+  .lang-switch {
+    width: auto;
+    margin-left: auto;
+  }
+  .site-nav {
+    margin-left: 0;
+  }
+}

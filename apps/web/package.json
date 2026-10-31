@@ -1,0 +1,30 @@
+{
+  "name": "@bhanak/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static-export web app: anonymous triage, emergency screen and landing page (milestone M2).",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "node scripts/verify-protocol.mjs && next build && node scripts/verify-output.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@bhanak/shared": "workspace:*",
+    "@bhanak/triage-engine": "workspace:*",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@bhanak/protocols": "workspace:*",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "axe-core": "^4.11.0",
+    "jsdom": "^27.0.0"
+  }
+}
