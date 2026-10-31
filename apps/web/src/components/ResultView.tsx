@@ -110,7 +110,7 @@ export function ResultView({
 
       <p className="meta" data-testid="record">
         {t('result.record', {
-          protocol: `${result.protocolId} ${result.protocolVersion} (${result.protocolReviewStatus})`,
+          protocol: `${t(`disease.${result.protocolId}`)} ${result.protocolVersion} (${t(`status.${result.protocolReviewStatus}`)})`,
           engine: result.engineVersion,
           hash: result.inputHash.slice(0, 8),
         })}

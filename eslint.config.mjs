@@ -34,7 +34,7 @@ export default tseslint.config(
   },
   {
     // Tests index into fixtures they know exist; the assertion is clearer than a guard there.
-    files: ['**/test/**/*.ts'],
+    files: ['**/test/**/*.{ts,tsx}'],
     rules: { '@typescript-eslint/no-non-null-assertion': 'off' },
   },
   {

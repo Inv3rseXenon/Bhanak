@@ -46,6 +46,77 @@ export const en = {
   'landing.tester': 'You are using a private test version. Thank you for helping us test it.',
   'landing.waitlist': 'Join the early-access list',
 
+  // ---- shell extras and page titles ----
+  'nav.main': 'Main',
+  'meta.title': '{brandName}: Catch the first hint.',
+  'disease.dengue': 'dengue',
+  'status.DRAFT': 'draft',
+  'status.REVIEWED': 'reviewed',
+  'notfound.title': 'Page not found',
+  'notfound.body': 'This page does not exist. You can still call for help, or go back home.',
+
+  // ---- home page ----
+  'landing.headline': 'Everyone deserves a brother who knows when to say: go to the hospital, now.',
+  'landing.tagline': '{brandName} pehle, khatra baad mein.',
+  'landing.taglineCompanion': 'Catch the first hint.',
+  'home.trust.1': 'No account needed',
+  'home.trust.2': 'Free to use',
+  'home.trust.3': 'English, Hindi and Marathi',
+  'home.watch.title': 'What to watch for',
+  'home.watch.lead': 'Swipe, or use the arrows. These are the things that matter most.',
+  'home.watch.1.title': 'Days 3 to 7 matter most',
+  'home.watch.2.title': 'Watch drinking and urine',
+  'home.watch.3.title': 'Watch for new symptoms',
+  'home.watch.4.title': 'Write it down every day',
+  'home.watch.5.title': 'Ask before taking painkillers',
+  'home.day': 'Day {n}',
+  'home.day.legend': 'Days {from} to {to}: the critical phase',
+  'carousel.roleCarousel': 'carousel',
+  'carousel.roleSlide': 'slide',
+  'carousel.prev': 'Previous',
+  'carousel.next': 'Next',
+  'carousel.slide': 'Slide {n} of {total}',
+  'carousel.goto': 'Go to slide {n}',
+  'home.features.title': 'Made to be easy to use',
+  'home.features.1.title': 'For you or for family',
+  'home.features.1.body':
+    'Check for yourself, your child or an older relative. The questions fit the person.',
+  'home.features.2.title': 'Extra care for people at higher risk',
+  'home.features.2.body':
+    'Age, pregnancy, diabetes, high blood pressure and other conditions raise the urgency.',
+  'home.features.3.title': 'Emergency help on every screen',
+  'home.features.3.body': 'Call 108 or 112 with one tap, from any page.',
+  'home.features.4.title': 'Plain words, your language',
+  'home.features.4.body': 'Short sentences in English, Hindi and Marathi.',
+  'home.features.5.title': 'Private by design',
+  'home.features.5.body': 'No account, no tracking. Your answers stay on your phone.',
+  'home.sources.title': 'Where the guidance comes from',
+  'home.sources.body': 'The questions and warning signs follow these guidelines.',
+  'home.sources.draft':
+    'Status: draft. A doctor has not yet reviewed this version, and the wording of every question is still being checked.',
+  'home.sources.reviewed': 'Reviewed by {name} on {date}.',
+  'faq.title': 'Questions people ask',
+  'faq.1.q': 'Does it tell me what illness I have?',
+  'faq.1.a':
+    'No. It tells you how urgently to get care. It does not diagnose. Only a doctor can say what is wrong.',
+  'faq.2.q': 'Do I need an account?',
+  'faq.2.a': 'No. Everything works without signing up.',
+  'faq.3.q': 'What happens to my answers?',
+  'faq.3.a':
+    'They stay on your phone. In this version nothing is sent to a server, and your answers are not saved.',
+  'faq.4.q': 'How does it decide?',
+  'faq.4.a':
+    'It follows fixed rules written from the national and World Health Organization dengue guidelines. The same answers always give the same result. If you say you are not sure about a warning sign, it asks you to be more careful, not less.',
+  'faq.5.q': 'Can it tell me which medicine to take?',
+  'faq.5.a':
+    'No. It never recommends medicines or doses. Ask a doctor or pharmacist before taking painkillers when dengue is possible.',
+  'faq.6.q': 'What if I am not sure of an answer?',
+  'faq.6.a':
+    'Choose "I\'m not sure". We treat that carefully, and may advise you to see a doctor sooner.',
+  'home.cta.title': 'Not sure what to do next?',
+  'home.cta.body':
+    'Answer a few questions and get a clear next step. If it is an emergency, call 108 or 112 first.',
+
   // ---- intake: shell ----
   'intake.progress': 'Question {current} of {total}',
   'intake.back': 'Back',

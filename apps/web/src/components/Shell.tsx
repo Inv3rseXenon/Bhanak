@@ -87,7 +87,7 @@ export function Shell({ children }: { children: ReactNode }) {
             <Logo />
             <span>{brand.wordmark}</span>
           </Link>
-          <nav aria-label="Main" className="site-nav">
+          <nav aria-label={t('nav.main')} className="site-nav">
             <Link href="/check/" className="nav-link nav-check">
               {t('nav.check')}
             </Link>

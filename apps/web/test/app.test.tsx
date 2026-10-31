@@ -158,7 +158,7 @@ describe('results', () => {
     walk();
     expect(screen.getByText(en['result.returnNow'])).toBeTruthy();
     expect(screen.getByText(msg('dengue.return.breathing'))).toBeTruthy();
-    expect(screen.getByTestId('record').textContent).toMatch(/dengue 0\.1\.0 \(DRAFT\)/);
+    expect(screen.getByTestId('record').textContent).toMatch(/dengue 0\.1\.0 \(draft\)/);
     expect(screen.getByTestId('record').textContent).toMatch(/engine 0\.1\.0/);
   });
 

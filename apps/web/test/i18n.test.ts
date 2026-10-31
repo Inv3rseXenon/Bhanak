@@ -6,6 +6,7 @@ import { mr } from '../src/i18n/mr';
 import { isLocale, needsReview, pickLocale } from '../src/i18n/locales';
 import { englishMessages, loadMessages } from '../src/i18n/messages';
 import { format, formatIndianNumber } from '../src/lib/format';
+import { strayEnglish } from './stray';
 
 const digits = (text: string): string[] => text.match(/\d+/g)?.sort() ?? [];
 const placeholders = (text: string): string[] => text.match(/\{\w+\}/g)?.sort() ?? [];
@@ -24,7 +25,10 @@ describe('UI strings', () => {
       ] as const) {
         const text: string = table[key as keyof typeof en];
         expect(digits(text), `${name} ${key}`).toEqual(digits(english));
-        expect(placeholders(text), `${name} ${key}`).toEqual(placeholders(english));
+        // The Hindi and Marathi tagline is written in Devanagari, so it does not use {brandName}.
+        if (key !== 'landing.tagline') {
+          expect(placeholders(text), `${name} ${key}`).toEqual(placeholders(english));
+        }
       }
     }
   });
@@ -117,5 +121,34 @@ describe('formatting', () => {
     expect(formatIndianNumber(12345678)).toBe('1,23,45,678');
     expect(formatIndianNumber(999)).toBe('999');
     expect(formatIndianNumber(1234.5)).toBe('1,234.5');
+  });
+});
+
+describe('complete translation', () => {
+  it('uses the brand headline, tagline and companion line as the English source', () => {
+    expect(en['landing.headline']).toBe(brand.homeHeadline);
+    expect(format(en['landing.tagline'], { brandName: brand.name })).toBe(brand.tagline);
+    expect(en['landing.taglineCompanion']).toBe(brand.taglineEn);
+  });
+
+  it('translates the headline, tagline and companion line into Hindi and Marathi', () => {
+    for (const table of [hi, mr]) {
+      for (const key of [
+        'landing.headline',
+        'landing.tagline',
+        'landing.taglineCompanion',
+      ] as const) {
+        expect(table[key], key).not.toBe(en[key]);
+      }
+    }
+  });
+
+  it('leaves no English words in any Hindi or Marathi string, protocol strings included', async () => {
+    for (const locale of ['hi', 'mr'] as const) {
+      const messages = await loadMessages(locale);
+      for (const [key, text] of Object.entries(messages)) {
+        expect(strayEnglish(text), `${locale} ${key}: ${text}`).toEqual([]);
+      }
+    }
   });
 });

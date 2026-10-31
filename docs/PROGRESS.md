@@ -36,6 +36,12 @@ Assumptions and deviations (all in ADR 0021):
 
 Not done and not verified: the first GitHub Actions run (T-006); real-device screen-reader testing; colour contrast was checked by design (all pairs at least 4.5:1) but not with a tool; LCP and CLS.
 
+### Home page and complete translation (2026-10-31)
+
+- Hindi and Marathi now translate everything: headline, tagline, browser tab title, navigation label, the 404 page and the result record line (my drafts, still behind the "translation under review" badge). A test fails on any stray English word in those languages.
+- Home page: hero with trust facts, a "what to watch for" carousel (no autoplay, big buttons, swipe, keyboard), how it works, features, sources, questions people ask, closing call to action. Web tests: 127.
+- Needs the founder: approve the Hindi and Marathi headline wording (W-006); the pocket guide is not cited on the page until its publisher is confirmed (W-013).
+
 ## M1 — done
 
 Built:

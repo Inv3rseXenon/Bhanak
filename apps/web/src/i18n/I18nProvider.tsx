@@ -66,6 +66,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     if (initial !== 'en') setLocale(initial);
   }, [setLocale]);
 
+  // The browser tab title follows the language too.
+  useEffect(() => {
+    document.title = format(messages['meta.title'] ?? englishMessages['meta.title'] ?? '', {
+      brandName: brand.name,
+    });
+  }, [messages]);
+
   const value = useMemo<I18n>(
     () => ({
       locale,
