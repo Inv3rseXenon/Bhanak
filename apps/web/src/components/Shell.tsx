@@ -111,7 +111,7 @@ export function Shell({ children }: { children: ReactNode }) {
           <strong className="badge">{t('review.badge')}</strong> {t('review.note')}
         </div>
       ) : null}
-      <main id="main" tabIndex={-1} className="container">
+      <main id="main" tabIndex={-1}>
         {children}
       </main>
       <footer className="site-footer">

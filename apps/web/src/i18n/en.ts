@@ -25,19 +25,8 @@ export const en = {
     'This translation has not been checked by a doctor yet. If anything is unclear, use the English text, or call 108 or 112.',
 
   // ---- landing ----
-  'landing.lead':
-    'Answer a few simple questions. Get a clear next step: how urgently to see a doctor, what to watch for, and when to go to a hospital.',
   'landing.cta': 'Check symptoms',
   'landing.emergency': 'Emergency help',
-  'landing.how.title': 'How it works',
-  'landing.how.1.title': 'Answer simple questions',
-  'landing.how.1.body': 'One question at a time. "I am not sure" is always an answer.',
-  'landing.how.2.title': 'Get a clear next step',
-  'landing.how.2.body':
-    'We tell you how urgently to seek care, and why, in plain words. When we are unsure, we advise more caution, not less.',
-  'landing.how.3.title': 'Know what to watch',
-  'landing.how.3.body':
-    'You always get the warning signs, and the signs that mean go to a hospital immediately.',
   'landing.not.title': 'What this is, and what it is not',
   'landing.not.body':
     '{brandName} gives guidance on how urgently to get care. It does not diagnose. It never recommends medicines or doses. It works without an account.',
@@ -77,19 +66,6 @@ export const en = {
   'carousel.next': 'Next',
   'carousel.slide': 'Slide {n} of {total}',
   'carousel.goto': 'Go to slide {n}',
-  'home.features.title': 'Made to be easy to use',
-  'home.features.1.title': 'For you or for family',
-  'home.features.1.body':
-    'Check for yourself, your child or an older relative. The questions fit the person.',
-  'home.features.2.title': 'Extra care for people at higher risk',
-  'home.features.2.body':
-    'Age, pregnancy, diabetes, high blood pressure and other conditions raise the urgency.',
-  'home.features.3.title': 'Emergency help on every screen',
-  'home.features.3.body': 'Call 108 or 112 with one tap, from any page.',
-  'home.features.4.title': 'Plain words, your language',
-  'home.features.4.body': 'Short sentences in English, Hindi and Marathi.',
-  'home.features.5.title': 'Private by design',
-  'home.features.5.body': 'No account, no tracking. Your answers stay on your phone.',
   'home.sources.title': 'Where the guidance comes from',
   'home.sources.body': 'The questions and warning signs follow these guidelines.',
   'home.sources.draft':
@@ -116,6 +92,9 @@ export const en = {
   'home.cta.title': 'Not sure what to do next?',
   'home.cta.body':
     'Answer a few questions and get a clear next step. If it is an emergency, call 108 or 112 first.',
+
+  'home.start.note': 'One question at a time. "I am not sure" is always an answer.',
+  'home.outcomes.title': 'Your answer will be one of these',
 
   // ---- intake: shell ----
   'intake.progress': 'Question {current} of {total}',

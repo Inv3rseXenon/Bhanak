@@ -8,7 +8,7 @@ import { useI18n } from '../i18n/I18nProvider';
 export default function NotFound() {
   const { t } = useI18n();
   return (
-    <>
+    <div className="wrap-narrow">
       <h1>{t('notfound.title')}</h1>
       <p>{t('notfound.body')}</p>
       <p>
@@ -17,6 +17,6 @@ export default function NotFound() {
         </Link>
       </p>
       <CallButtons withHospital={false} />
-    </>
+    </div>
   );
 }

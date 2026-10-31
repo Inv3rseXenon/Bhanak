@@ -83,3 +83,23 @@ export const LockIcon = () => (
     <path d="M8 10.500V8a4 4 0 0 1 8 0v2.500" />
   </svg>
 );
+
+export const PersonIcon = () => (
+  <svg {...base}>
+    <circle cx="12" cy="7.500" r="3.500" />
+    <path d="M5 21a7 7 0 0 1 14 0" />
+  </svg>
+);
+
+export const ChildIcon = () => (
+  <svg {...base}>
+    <circle cx="12" cy="9" r="3" />
+    <path d="M7 21a5 5 0 0 1 10 0M9 4.500c1-1.500 5-1.500 6 0" />
+  </svg>
+);
+
+export const PulseGlyph = () => (
+  <svg {...base}>
+    <path d="M2 13h5l2.500-6 4 12 2.500-6H22" />
+  </svg>
+);

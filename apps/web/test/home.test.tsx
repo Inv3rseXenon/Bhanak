@@ -18,26 +18,80 @@ import { expectNoAxeViolations, fireEvent, renderApp, screen, waitFor } from './
 const msg = (key: string): string => englishMessages[key] ?? `MISSING ${key}`;
 
 describe('home page content', () => {
-  it('has the sections of a complete home page, each with a heading', () => {
+  it('is built around starting the check: the first question is in the hero', () => {
+    renderApp(<Landing />);
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(en['nav.check']);
+    expect(screen.getByText(en['intake.who.title'])).toBeTruthy();
+    // The founder line is kept, as the quote under the title.
+    expect(screen.getByText(en['landing.headline'])).toBeTruthy();
+  });
+
+  it('starts the check from the hero: three doors that carry the answer to "who is this for?"', () => {
+    renderApp(<Landing />);
+    const doors = [...document.querySelectorAll('.start-doors a')];
+    expect(doors.map((a) => a.textContent)).toEqual([
+      en['intake.who.self'],
+      en['intake.who.child'],
+      en['intake.who.family'],
+    ]);
+    const hrefs = doors.map((a) => a.getAttribute('href') ?? '');
+    ['SELF', 'CHILD', 'FAMILY'].forEach((who, i) => {
+      expect(hrefs[i]).toMatch(new RegExp('^/check/?#who=' + who + '$'));
+    });
+    // Nothing else in the hero competes with the doors.
+    expect(document.querySelectorAll('.hero-full a[href^="/check"]')).toHaveLength(3);
+  });
+
+  it('shows the title as a trilingual signboard: the other two languages sit under it', () => {
+    renderApp(<Landing />);
+    const others = [...document.querySelectorAll('.hero-langs [lang]')];
+    expect(others.map((n) => [n.getAttribute('lang'), n.textContent])).toEqual([
+      ['hi', hi['nav.check']],
+      ['mr', mr['nav.check']],
+    ]);
+  });
+
+  it('shows every outcome the check can give as a hospital-style sign, from the protocol', () => {
+    renderApp(<Landing />);
+    const signs = [...document.querySelectorAll('.signs li')];
+    expect(signs).toHaveLength(4);
+    expect(signs.map((li) => li.querySelector('.sign-primary')?.textContent)).toEqual([
+      en['level.EMERGENCY_NOW'],
+      en['level.SEE_DOCTOR_TODAY'],
+      en['level.TEST_AND_MONITOR'],
+      en['level.HOME_CARE_WITH_TRIGGERS'],
+    ]);
+    for (const li of signs) {
+      expect(li.querySelectorAll('.sign-others [lang]')).toHaveLength(2);
+      expect(li.querySelector('.sign-note')?.textContent).not.toBe('');
+    }
+  });
+
+  it('has the sections of the page, each with a heading, in order', () => {
     renderApp(<Landing />);
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
     expect(headings).toEqual([
+      en['home.outcomes.title'],
       en['home.watch.title'],
-      en['landing.how.title'],
-      en['home.features.title'],
-      en['home.sources.title'],
+      en['emergency.title'],
       en['faq.title'],
-      en['home.cta.title'],
+      en['home.sources.title'],
       en['landing.not.title'],
+      en['home.cta.title'],
     ]);
-    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
   });
 
-  it('shows five features and six questions with answers', () => {
+  it('draws the hospital as pictures that are decoration only: no image file, no remote image', () => {
     renderApp(<Landing />);
-    for (let n = 1; n <= 5; n += 1) {
-      expect(screen.getByText(msg(`home.features.${n}.title`))).toBeTruthy();
-    }
+    const scenes = document.querySelectorAll('svg.scene');
+    expect(scenes.length).toBeGreaterThanOrEqual(2);
+    for (const scene of scenes) expect(scene.getAttribute('aria-hidden')).toBe('true');
+    expect(document.querySelectorAll('img')).toHaveLength(0);
+  });
+
+  it('has six questions with answers', () => {
+    renderApp(<Landing />);
     for (let n = 1; n <= 6; n += 1) {
       expect(screen.getByText(msg(`faq.${n}.q`))).toBeTruthy();
       expect(screen.getByText(msg(`faq.${n}.a`))).toBeTruthy();
@@ -65,7 +119,7 @@ describe('home page content', () => {
     expect(text.toLowerCase()).not.toContain('you are fine');
   });
 
-  it('has no accessibility violations (carousel, features, FAQ included)', async () => {
+  it('has no accessibility violations (signs, carousel, FAQ included)', async () => {
     const { container } = renderApp(<Landing />);
     await expectNoAxeViolations(container);
   });
@@ -157,9 +211,9 @@ describe.each([
     const { container } = renderApp(<Landing />);
     fireEvent.click(screen.getByRole('button', { name: button }));
     await waitFor(() => {
-      expect(screen.getAllByText(table['landing.cta']).length).toBeGreaterThan(0);
+      expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(table['nav.check']);
     });
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(table['landing.headline']);
+    expect(screen.getByText(table['landing.headline'])).toBeTruthy();
     expect(strayEnglish(visibleText(container))).toEqual([]);
     expect(document.title).toContain(table['meta.title'].replace('{brandName}', '').trim());
   });

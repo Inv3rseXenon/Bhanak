@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { TESTER_MODE } from '../config';
 import { useI18n } from '../i18n/I18nProvider';
 import { assess } from '../lib/assess';
@@ -12,6 +13,7 @@ import { FailSafeView } from './FailSafeView';
 import { BackIcon } from './Icons';
 import { PulseProgress } from './Pulse';
 import { ResultView } from './ResultView';
+import { EntranceScene } from './Scenes';
 
 type Setter = (key: string, value: string | string[]) => void;
 
@@ -264,6 +266,21 @@ function StepBody({
   }
 }
 
+/** Questions on the left; on wide screens an illustration of a hospital entrance on the right. */
+function CheckLayout({ children }: { children: ReactNode }) {
+  return (
+    <div className="wrap check-layout">
+      <div className="check-main">{children}</div>
+      <aside className="check-aside" aria-hidden="true">
+        <EntranceScene />
+      </aside>
+    </div>
+  );
+}
+
+/** "Who is this for?" can be answered on the home page: /check/#who=CHILD starts at the age question. */
+const WHO_FROM_HASH = /^#who=(SELF|CHILD|FAMILY)$/;
+
 /** Guided intake: one question per screen, Back keeps answers, "not sure" on every danger question. */
 export function Wizard() {
   const { t, has } = useI18n();
@@ -279,6 +296,14 @@ export function Wizard() {
     steps.findIndex((step) => step.id === stepId),
   );
   const step = steps[index];
+
+  useEffect(() => {
+    const match = WHO_FROM_HASH.exec(window.location.hash);
+    if (match?.[1] !== undefined) {
+      setAnswers({ who: match[1] });
+      setStepId('age');
+    }
+  }, []);
 
   useEffect(() => {
     heading.current?.focus();
@@ -298,10 +323,14 @@ export function Wizard() {
   };
 
   if (assessment !== null) {
-    return assessment.kind === 'ok' ? (
-      <ResultView result={assessment.result} display={assessment.display} onRestart={restart} />
-    ) : (
-      <FailSafeView onRetry={restart} />
+    return (
+      <CheckLayout>
+        {assessment.kind === 'ok' ? (
+          <ResultView result={assessment.result} display={assessment.display} onRestart={restart} />
+        ) : (
+          <FailSafeView onRetry={restart} />
+        )}
+      </CheckLayout>
     );
   }
   if (step === undefined) return null; // unreachable: visibleSteps always starts with "who"
@@ -339,63 +368,66 @@ export function Wizard() {
   const autoAdvances = step.kind === 'tri' || step.kind === 'choice';
 
   return (
-    <section aria-labelledby="step-title" data-testid="wizard" className="screen">
-      <div className="screen-top">
-        {index > 0 ? (
-          <button type="button" className="back-link" onClick={back}>
-            <BackIcon />
-            {t('intake.back')}
-          </button>
-        ) : (
-          <span />
-        )}
-        <p className="progress-text" data-testid="progress">
-          {t('intake.progress', { current: index + 1, total: steps.length })}
-        </p>
-      </div>
-      <div
-        className="progress"
-        role="progressbar"
-        aria-valuemin={1}
-        aria-valuemax={steps.length}
-        aria-valuenow={index + 1}
-        aria-label={t('intake.progress', { current: index + 1, total: steps.length })}
-      >
-        <PulseProgress value={index + 1} max={steps.length} />
-      </div>
-
-      <h1 id="step-title" ref={heading} tabIndex={-1} className="question">
-        {t(step.titleKey)}
-      </h1>
-      {step.helpKey !== undefined && has(step.helpKey) ? (
-        <p className="help">{t(step.helpKey)}</p>
-      ) : null}
-
-      <StepBody step={step} answers={answers} set={set} advance={advance} />
-
-      {error !== null ? (
-        <p role="alert" className="error" data-testid="step-error">
-          {t(error)}
-        </p>
-      ) : null}
-
-      {autoAdvances ? null : (
-        <div className="nav-buttons">
-          <button
-            type="button"
-            className="button button-primary button-large"
-            onClick={() => {
-              advance();
-            }}
-          >
-            {t(isLast ? 'intake.seeResult' : 'intake.next')}
-          </button>
+    <CheckLayout>
+      <section aria-labelledby="step-title" data-testid="wizard" className="screen">
+        <div className="screen-top">
+          {index > 0 ? (
+            <button type="button" className="back-link" onClick={back}>
+              <BackIcon />
+              {t('intake.back')}
+            </button>
+          ) : (
+            <span />
+          )}
+          <p className="progress-text" data-testid="progress">
+            {t('intake.progress', { current: index + 1, total: steps.length })}
+          </p>
         </div>
-      )}
+        <div
+          className="progress"
+          role="progressbar"
+          aria-valuemin={1}
+          aria-valuemax={steps.length}
+          aria-valuenow={index + 1}
+          aria-label={t('intake.progress', { current: index + 1, total: steps.length })}
+        >
+          <PulseProgress value={index + 1} max={steps.length} />
+        </div>
 
-      <p className="emergency-bar" role="note">
-        <span>{t('intake.emergencyBar')}</span> <a href="tel:108">108</a> <a href="tel:112">112</a>
-      </p>
-    </section>
+        <h1 id="step-title" ref={heading} tabIndex={-1} className="question">
+          {t(step.titleKey)}
+        </h1>
+        {step.helpKey !== undefined && has(step.helpKey) ? (
+          <p className="help">{t(step.helpKey)}</p>
+        ) : null}
+
+        <StepBody step={step} answers={answers} set={set} advance={advance} />
+
+        {error !== null ? (
+          <p role="alert" className="error" data-testid="step-error">
+            {t(error)}
+          </p>
+        ) : null}
+
+        {autoAdvances ? null : (
+          <div className="nav-buttons">
+            <button
+              type="button"
+              className="button button-primary button-large"
+              onClick={() => {
+                advance();
+              }}
+            >
+              {t(isLast ? 'intake.seeResult' : 'intake.next')}
+            </button>
+          </div>
+        )}
+
+        <p className="emergency-bar" role="note">
+          <span>{t('intake.emergencyBar')}</span> <a href="tel:108">108</a>{' '}
+          <a href="tel:112">112</a>
+        </p>
+      </section>
+    </CheckLayout>
   );
 }

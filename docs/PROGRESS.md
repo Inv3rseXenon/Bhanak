@@ -42,6 +42,11 @@ Not done and not verified: the first GitHub Actions run (T-006); real-device scr
 - Home page: hero with trust facts, a "what to watch for" carousel (no autoplay, big buttons, swipe, keyboard), how it works, features, sources, questions people ask, closing call to action. Web tests: 127.
 - Needs the founder: approve the Hindi and Marathi headline wording (W-006); the pocket guide is not cited on the page until its publisher is confirmed (W-013).
 
+### Signboard redesign, check-first home page (2026-10-31)
+
+- Home page rebuilt around starting the check: hero with the first question as three large doors, trilingual signboard title, original illustrations of an Indian hospital, outcome signs, the watch-for carousel, where to go in an emergency, questions and sources, closing call to action. Full-width layout; two columns with an illustration in the check flow on wide screens.
+- Pictures are my SVG drawings, not photographs (W-015, W-016). Web tests: 137.
+
 ## M1 — done
 
 Built:

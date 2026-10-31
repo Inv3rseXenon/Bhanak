@@ -13,6 +13,7 @@ import { assess } from '../src/lib/assess';
 import { DANGER_SYMPTOM_KEYS, toTriageInput } from '../src/lib/intake';
 import { protocol } from '../src/lib/protocol';
 import type { Protocol } from '@bhanak/triage-engine';
+import { cleanup } from '@testing-library/react';
 import { expectNoAxeViolations, fireEvent, renderApp, screen, waitFor, walk } from './helpers';
 
 // Normal (non-tester) build: the config is read from the environment, where TESTER_MODE is unset.
@@ -226,5 +227,32 @@ describe('languages', () => {
     await waitFor(() => {
       expect(screen.queryByText('भाषांतराचे पुनरावलोकन सुरू आहे')).toBeNull();
     });
+  });
+});
+
+describe('starting the check from the home page', () => {
+  const start = (hash: string) => {
+    window.location.hash = hash;
+    renderApp(<Wizard />);
+  };
+
+  it('skips the first question when the home page already asked it', () => {
+    start('#who=CHILD');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(en['intake.age.title']);
+    // The answer is kept: going back shows it chosen.
+    fireEvent.click(screen.getByRole('button', { name: en['intake.back'] }));
+    expect(
+      screen.getByRole('button', { name: en['intake.who.child'] }).getAttribute('aria-pressed'),
+    ).toBe('true');
+    window.location.hash = '';
+  });
+
+  it('ignores anything that is not one of the three answers', () => {
+    for (const hash of ['#who=EVIL', '#who=', '#who=SELF&x=1', '#other']) {
+      start(hash);
+      expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(en['intake.who.title']);
+      cleanup();
+    }
+    window.location.hash = '';
   });
 });

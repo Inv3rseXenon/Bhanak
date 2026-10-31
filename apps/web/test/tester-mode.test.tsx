@@ -144,3 +144,17 @@ describe('landing page in tester mode', () => {
     expect(screen.queryByText(en['landing.waitlist'])).toBeNull();
   });
 });
+
+describe('outcome signs in tester mode', () => {
+  it('show three outcomes: home care is never shown, so it is not advertised either', () => {
+    renderApp(<Landing />);
+    const signs = [...document.querySelectorAll('.signs li .sign-primary')].map(
+      (n) => n.textContent,
+    );
+    expect(signs).toEqual([
+      en['level.EMERGENCY_NOW'],
+      en['level.SEE_DOCTOR_TODAY'],
+      en['level.TEST_AND_MONITOR'],
+    ]);
+  });
+});
