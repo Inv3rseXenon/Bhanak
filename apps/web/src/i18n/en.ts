@@ -13,6 +13,7 @@ export const en = {
   'nav.check': 'Check symptoms',
   'nav.emergency': 'Emergency',
   'lang.label': 'Language',
+  'a11y.largeText': 'Large text',
   'banner.tester':
     'TEST VERSION, NOT MEDICALLY REVIEWED. Not for real medical decisions. In an emergency call 108 or 112.',
   'banner.draft': 'TEST VERSION, NOT MEDICALLY REVIEWED',
@@ -24,7 +25,6 @@ export const en = {
     'This translation has not been checked by a doctor yet. If anything is unclear, use the English text, or call 108 or 112.',
 
   // ---- landing ----
-  'landing.eyebrow': 'Dengue and monsoon fever guidance',
   'landing.lead':
     'Answer a few simple questions. Get a clear next step: how urgently to see a doctor, what to watch for, and when to go to a hospital.',
   'landing.cta': 'Check symptoms',

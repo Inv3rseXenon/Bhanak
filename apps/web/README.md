@@ -43,6 +43,6 @@ test/             display floor, intake mapping, i18n, release gate, privacy, an
 
 - Urgency comes only from `@bhanak/triage-engine`. The web app maps answers in and displays the result; it never decides a level. `TESTER_MODE` only raises what is displayed.
 - A question that was shown sends an explicit answer; one that was not shown sends nothing (the engine reads that as UNKNOWN). "Not sure" on pregnancy, blood thinner and lives-alone means yes.
-- No network calls, cookies, analytics or third-party scripts (tests enforce this). The only stored value is the chosen language.
+- No network calls, cookies, analytics or third-party scripts (tests enforce this). The only stored values are the chosen language and the "Large text" setting (`localStorage`, never sent anywhere).
 - Add a string to `en.ts` first; `hi.ts` and `mr.ts` then fail to compile until they have it. Never write the brand name in a string (use `{brandName}`).
 - Hindi and Marathi stay behind the "translation under review" badge until a native-speaking doctor signs them off.

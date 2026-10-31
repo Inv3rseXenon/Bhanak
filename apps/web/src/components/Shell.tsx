@@ -8,6 +8,8 @@ import { FEEDBACK_URL, TESTER_MODE } from '../config';
 import { useI18n } from '../i18n/I18nProvider';
 import { LOCALES, LOCALE_NAMES } from '../i18n/locales';
 import { protocol } from '../lib/protocol';
+import { PhoneIcon } from './Icons';
+import { TextSize } from './TextSize';
 
 const isDraft = protocol.reviewStatus !== 'REVIEWED';
 
@@ -36,16 +38,16 @@ export function Banner() {
 
 function Logo() {
   return (
-    <svg width="34" height="24" viewBox="0 0 34 24" aria-hidden="true" focusable="false">
+    <svg width="40" height="28" viewBox="0 0 40 28" aria-hidden="true" focusable="false">
       <path
-        d="M1 14h6l3-7 4 14 4-9h4"
+        d="M1 17h7l3-8 5 16 5-11h4"
         fill="none"
         stroke="#0A6B66"
-        strokeWidth="2.5"
+        strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="29" cy="9" r="3.2" fill="#B54708" />
+      <circle cx="34" cy="11" r="4" fill="#B54708" />
     </svg>
   );
 }
@@ -80,19 +82,29 @@ export function Shell({ children }: { children: ReactNode }) {
       </a>
       <Banner />
       <header className="site-header">
-        <Link href="/" className="logo" aria-label={`${brand.wordmark}: ${t('nav.home')}`}>
-          <Logo />
-          <span>{brand.wordmark}</span>
-        </Link>
-        <nav aria-label="Main" className="site-nav">
-          <Link href="/check/" className="nav-link">
-            {t('nav.check')}
+        <div className="header-row">
+          <Link href="/" className="logo" aria-label={`${brand.wordmark}: ${t('nav.home')}`}>
+            <Logo />
+            <span>{brand.wordmark}</span>
           </Link>
-          <Link href="/emergency/" className="nav-link nav-emergency" data-testid="emergency-link">
-            {t('nav.emergency')}
-          </Link>
-        </nav>
-        <LanguageSwitcher />
+          <nav aria-label="Main" className="site-nav">
+            <Link href="/check/" className="nav-link nav-check">
+              {t('nav.check')}
+            </Link>
+            <Link
+              href="/emergency/"
+              className="nav-link nav-emergency"
+              data-testid="emergency-link"
+            >
+              <PhoneIcon />
+              {t('nav.emergency')}
+            </Link>
+          </nav>
+        </div>
+        <div className="header-row header-tools">
+          <LanguageSwitcher />
+          <TextSize />
+        </div>
       </header>
       {underReview ? (
         <div className="review-note" role="note">
@@ -103,23 +115,25 @@ export function Shell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <footer className="site-footer">
-        <p className="disclaimer">{t('footer.disclaimer')}</p>
-        {TESTER_MODE ? (
-          <p>
-            <a
-              className="button button-secondary"
-              href={FEEDBACK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-testid="feedback-link"
-            >
-              {t('footer.feedback')}
-            </a>
+        <div className="footer-inner">
+          <p className="disclaimer">{t('footer.disclaimer')}</p>
+          {TESTER_MODE ? (
+            <p>
+              <a
+                className="button button-secondary"
+                href={FEEDBACK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="feedback-link"
+              >
+                {t('footer.feedback')}
+              </a>
+            </p>
+          ) : null}
+          <p className="meta">
+            {t('footer.rules', { protocol: protocol.version, engine: ENGINE_VERSION })}
           </p>
-        ) : null}
-        <p className="meta">
-          {t('footer.rules', { protocol: protocol.version, engine: ENGINE_VERSION })}
-        </p>
+        </div>
       </footer>
     </>
   );

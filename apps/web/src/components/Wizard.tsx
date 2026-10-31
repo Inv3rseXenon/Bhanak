@@ -9,6 +9,8 @@ import { LAB_FIELDS, LAB_TESTS, toTriageInput, validateStep, visibleSteps } from
 import type { Answers, Step } from '../lib/intake';
 import { protocol } from '../lib/protocol';
 import { FailSafeView } from './FailSafeView';
+import { BackIcon } from './Icons';
+import { PulseProgress } from './Pulse';
 import { ResultView } from './ResultView';
 
 type Setter = (key: string, value: string | string[]) => void;
@@ -29,7 +31,7 @@ function TriButtons({
     ['UNKNOWN', 'intake.notSure'],
   ] as const;
   return (
-    <div className="choices">
+    <div className="choices choices-tri">
       {options.map(([value, labelKey]) => (
         <button
           key={value}
@@ -337,14 +339,20 @@ export function Wizard() {
   const autoAdvances = step.kind === 'tri' || step.kind === 'choice';
 
   return (
-    <section aria-labelledby="step-title" data-testid="wizard">
-      <div className="emergency-bar" role="note">
-        <span>{t('intake.emergencyBar')}</span> <a href="tel:108">108</a> ·{' '}
-        <a href="tel:112">112</a>
+    <section aria-labelledby="step-title" data-testid="wizard" className="screen">
+      <div className="screen-top">
+        {index > 0 ? (
+          <button type="button" className="back-link" onClick={back}>
+            <BackIcon />
+            {t('intake.back')}
+          </button>
+        ) : (
+          <span />
+        )}
+        <p className="progress-text" data-testid="progress">
+          {t('intake.progress', { current: index + 1, total: steps.length })}
+        </p>
       </div>
-      <p className="progress-text" data-testid="progress">
-        {t('intake.progress', { current: index + 1, total: steps.length })}
-      </p>
       <div
         className="progress"
         role="progressbar"
@@ -353,10 +361,10 @@ export function Wizard() {
         aria-valuenow={index + 1}
         aria-label={t('intake.progress', { current: index + 1, total: steps.length })}
       >
-        <div style={{ width: `${String(((index + 1) / steps.length) * 100)}%` }} />
+        <PulseProgress value={index + 1} max={steps.length} />
       </div>
 
-      <h1 id="step-title" ref={heading} tabIndex={-1}>
+      <h1 id="step-title" ref={heading} tabIndex={-1} className="question">
         {t(step.titleKey)}
       </h1>
       {step.helpKey !== undefined && has(step.helpKey) ? (
@@ -371,24 +379,23 @@ export function Wizard() {
         </p>
       ) : null}
 
-      <div className="nav-buttons">
-        {index > 0 ? (
-          <button type="button" className="button button-secondary" onClick={back}>
-            {t('intake.back')}
-          </button>
-        ) : null}
-        {autoAdvances ? null : (
+      {autoAdvances ? null : (
+        <div className="nav-buttons">
           <button
             type="button"
-            className="button button-primary"
+            className="button button-primary button-large"
             onClick={() => {
               advance();
             }}
           >
             {t(isLast ? 'intake.seeResult' : 'intake.next')}
           </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      <p className="emergency-bar" role="note">
+        <span>{t('intake.emergencyBar')}</span> <a href="tel:108">108</a> <a href="tel:112">112</a>
+      </p>
     </section>
   );
 }

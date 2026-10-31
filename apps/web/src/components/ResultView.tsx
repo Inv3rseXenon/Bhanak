@@ -6,6 +6,7 @@ import { useI18n } from '../i18n/I18nProvider';
 import type { DisplayModel } from '../lib/display';
 import { buildSummaryText } from '../lib/summary';
 import { CallButtons } from './CallButtons';
+import { RestartIcon, ShareIcon } from './Icons';
 import { LevelIcon } from './LevelIcon';
 
 function List({ title, keys, className }: { title: string; keys: string[]; className?: string }) {
@@ -61,7 +62,9 @@ export function ResultView({
         {t('result.title')}
       </h1>
       <div className={`level-card level-${display.level}`} role="status" aria-live="polite">
-        <LevelIcon level={display.level} />
+        <span className="level-icon">
+          <LevelIcon level={display.level} />
+        </span>
         <div>
           <p className="level-label" data-testid="level-label">
             {t(`level.${display.level}`)}
@@ -93,9 +96,11 @@ export function ResultView({
 
       <div className="result-actions">
         <button type="button" className="button button-secondary" onClick={() => void share()}>
+          <ShareIcon />
           {t('result.share')}
         </button>
         <button type="button" className="button button-secondary" onClick={onRestart}>
+          <RestartIcon />
           {t('result.startOver')}
         </button>
         <p role="status" className="meta">

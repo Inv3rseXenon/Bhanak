@@ -18,7 +18,7 @@ Built:
 - **Tester release (all six requested items):**
   1. `TESTER_MODE` build flag. Banner on every screen in en/hi/mr with the exact text requested, sticky at the top. `pnpm build:tester` sets it.
   2. Display floor (`apps/web/src/lib/display.ts`): HOME_CARE_WITH_TRIGGERS is never shown, TEST_AND_MONITOR is the minimum, with "If you are unsure, see a doctor." Unit tests prove it never lowers any level, for all four levels and for all 163 scenarios using the real engine and protocol. The engine, protocol, thresholds and scenarios are untouched.
-  3. noindex meta tag and `robots.txt` `Disallow: /` (and an `X-Robots-Tag` header); no analytics, no cookies; nothing sent to any server (tests scan the source; a Content-Security-Policy with `connect-src 'self'` enforces it in the browser; `verify-output.mjs` scans the built files). The only thing remembered is the chosen language (`localStorage`).
+  3. noindex meta tag and `robots.txt` `Disallow: /` (and an `X-Robots-Tag` header); no analytics, no cookies; nothing sent to any server (tests scan the source; a Content-Security-Policy with `connect-src 'self'` enforces it in the browser; `verify-output.mjs` scans the built files). The only things remembered are the chosen language and the "Large text" setting (`localStorage`).
   4. "Send feedback" link (placeholder Google Form URL until `FEEDBACK_URL` is set; TODO W-001).
   5. `docs/runbooks/tester-deploy.md`: build command `pnpm build:tester`, output directory `apps/web/out`, direct-upload and Git-connected steps for Cloudflare Pages and Netlify, access control, form notice, post-deploy checks, smoke checks.
   6. This file, committed.

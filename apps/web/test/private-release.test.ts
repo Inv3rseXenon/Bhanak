@@ -41,16 +41,23 @@ describe('private tester release: nothing leaves the device', () => {
     }
   });
 
-  it('sets no cookies and uses no storage except the remembered language', () => {
+  it('sets no cookies and stores only the chosen language and text size', () => {
+    const allowed = ['I18nProvider.tsx', 'TextSize.tsx'];
     for (const { file, text } of sources) {
       expect(text, file).not.toMatch(/document\.cookie/);
       expect(text, file).not.toMatch(/indexedDB|sessionStorage/);
-      if (!file.endsWith('I18nProvider.tsx')) expect(text, file).not.toMatch(/localStorage/);
+      if (!allowed.some((name) => file.endsWith(name))) {
+        expect(text, file).not.toMatch(/localStorage/);
+      }
     }
     const provider = sources.find((s) => s.file.endsWith('I18nProvider.tsx'))?.text ?? '';
-    const keys = [...provider.matchAll(/(?:get|set)Item\(([^,)]+)/g)].map((m) => m[1]);
-    expect(new Set(keys)).toEqual(new Set(['STORAGE_KEY']));
+    const size = sources.find((s) => s.file.endsWith('TextSize.tsx'))?.text ?? '';
+    const keys = (text: string) =>
+      new Set([...text.matchAll(/(?:get|set)Item\(([^,)]+)/g)].map((m) => m[1]));
+    expect(keys(provider)).toEqual(new Set(['STORAGE_KEY']));
+    expect(keys(size)).toEqual(new Set(['SIZE_KEY']));
     expect(provider).toMatch(/STORAGE_KEY = 'lang'/);
+    expect(size).toMatch(/SIZE_KEY = 'size'/);
   });
 
   it('loads no analytics, tracking, ad or third-party script', () => {
