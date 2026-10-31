@@ -16,8 +16,8 @@ concurrency:
 # brand-string check, secret scan, high/critical vulnerability audit.
 # Gates that arrive with their milestones (tracked in docs/TODO.md, not silently skipped):
 #   M1  scenario suite + 100% engine branch coverage
-#   M2  banned-words check on UI copy, axe a11y, Playwright e2e, Lighthouse CI budgets,
-#       "no secrets in web bundle" scan, unreviewed-protocol prod gate
+#   M2  done: banned-words check on English UI copy, axe a11y (jsdom), unreviewed-protocol prod gate
+#       still to come: Playwright e2e, Lighthouse CI budgets, secret scan of the web output (docs/TODO.md)
 #   M3+ Trivy container scan
 #   M9  CodeQL, OWASP ZAP baseline, SBOM (CycloneDX), k6 load test
 jobs:
@@ -38,6 +38,15 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      # Release gate (spec 5.5): a production build must refuse an unreviewed protocol.
+      - name: Production build must fail while the protocol is a draft
+        run: |
+          if pnpm build:release; then
+            echo "::error::build:release accepted a DRAFT protocol"
+            exit 1
+          fi
+      # Last, so apps/web/out is the tester build (banner, noindex, display floor).
+      - run: pnpm build:tester
 
   secrets:
     runs-on: ubuntu-latest
