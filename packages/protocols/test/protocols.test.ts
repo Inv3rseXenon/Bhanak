@@ -138,6 +138,30 @@ describe('strings (en)', () => {
   });
 });
 
+describe.each(['hi', 'mr'])('strings (%s)', (locale) => {
+  const raw = readJson(join(packageRoot, 'dengue', `v0.1.0.strings.${locale}.json`)) as {
+    locale: string;
+    status: string;
+  };
+  const translated = parseStrings(raw);
+
+  it('has exactly the same keys as the English source strings', () => {
+    expect(checkStrings(protocol, translated, ENGINE_I18N_KEYS)).toEqual([]);
+  });
+
+  it('is flagged as a translation that still needs review', () => {
+    expect(raw.locale).toBe(locale);
+    expect(raw.status).toBe('NEEDS_REVIEW');
+  });
+
+  it('keeps every number and placeholder that the English text has', () => {
+    for (const [key, english] of Object.entries(strings)) {
+      const digits = (text: string): string[] => text.match(/\d+/g)?.sort() ?? [];
+      expect(digits(translated[key] ?? ''), key).toEqual(digits(english));
+    }
+  });
+});
+
 describe('generated files are up to date', () => {
   it('schema/protocol.schema.json matches the zod schema', () => {
     const onDisk = readJson(join(packageRoot, 'schema', 'protocol.schema.json'));

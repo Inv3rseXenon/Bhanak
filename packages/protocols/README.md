@@ -5,6 +5,8 @@ Clinical protocol files, their schema, the loader and the release gate. A protoc
 ```
 dengue/v0.1.0.json              the protocol (DRAFT, not medically reviewed)
 dengue/v0.1.0.strings.en.json   English source strings for every i18n key it uses
+dengue/v0.1.0.strings.hi.json   Hindi first-pass translation (status NEEDS_REVIEW, no doctor sign-off yet)
+dengue/v0.1.0.strings.mr.json   Marathi first-pass translation (status NEEDS_REVIEW, no doctor sign-off yet)
 schema/protocol.schema.json     JSON Schema, generated from the zod schema
 src/                            schema, loader, integrity checks, release gate, checklist renderer
 ```
@@ -30,7 +32,7 @@ Source ids: `NCVBDC2023` (National Guidelines for Clinical Management of Dengue 
 ## Editing a protocol
 
 1. Edit the JSON. Never invent a clinical fact: cite a source or leave `basis` as `SPEC_PROVISIONAL` / `SAFETY_DEFAULT` with a note, and keep `review: "TODO_DOCTOR_REVIEW"`.
-2. Add or update the English string for every new `i18nKey` in the strings file (the test fails on a missing or unused key). Copy must pass the banned-claims check.
+2. Add or update the English string for every new `i18nKey` in the strings file (the test fails on a missing or unused key), and add the Hindi and Marathi drafts: the tests require the same keys and the same numbers in all three. Copy must pass the banned-claims check.
 3. Run `pnpm --filter @bhanak/protocols generate` to refresh the JSON Schema and the generated checklist in `docs/clinical-review-checklist.md`.
 4. Add or update scenarios in `tests/scenarios/build-dengue-scenarios.mjs` and run it. **Write expectations from the sources, never from engine output.**
 5. Run `pnpm test`. A protocol is immutable once published: change means a new version file.
